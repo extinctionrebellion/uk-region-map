@@ -1,0 +1,5 @@
+
+England region geojson from
+https://ons-inspire.esriuk.com/arcgis/rest/services/Administrative_Boundaries/Region_December_2015_Boundaries/MapServer/2/query?outFields=*&where=1%3D1&f=geojson
+
+
