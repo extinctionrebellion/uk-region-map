@@ -4,4 +4,16 @@ html, body {
 	margin: 0;
 }
 #map { height: 100%; width: 100% }
-#popups { display: hidden; }
+
+.area-info-section { display: none; }
+
+#area-info {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: rgba(0,0,0,0.5);
+        color: white;
+	width:40%;
+	z-index: 1000;
+	padding: 1em;
+}

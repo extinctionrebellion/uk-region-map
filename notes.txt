@@ -1,5 +1,22 @@
+LA to country:
+https://geoportal.statistics.gov.uk/datasets/local-authority-district-to-country-april-2019-lookup-in-the-united-kingdom
 
+map of LA to county: http://geoportal.statistics.gov.uk/datasets/local-authority-district-to-county-april-2019-lookup-in-england
+
+map of LA to region: https://geoportal.statistics.gov.uk/datasets/local-authority-district-to-region-april-2019-lookup-in-england
+
+boundries of LAs https://geoportal.statistics.gov.uk/datasets/local-authority-districts-april-2019-boundaries-uk-bgc (stylised)
+https://opendata.arcgis.com/datasets/85305f03b26547ac8ef62c0ad13aaa52_0.geojson
+
+
+
+
+OLD 
 England region geojson from
 https://ons-inspire.esriuk.com/arcgis/rest/services/Administrative_Boundaries/Region_December_2015_Boundaries/MapServer/2/query?outFields=*&where=1%3D1&f=geojson
 
+UK region geojson from
+https://opendata.arcgis.com/datasets/20595dbf22534e20944c9cee42c665b3_0.geojson
 
+UK countries geojson from https://raw.githubusercontent.com/deldersveld/topojson/master/countries/united-kingdom/uk-counties.json
+converted via https://mapshaper.org/
