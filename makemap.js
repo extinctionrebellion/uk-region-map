@@ -21,14 +21,14 @@ var colours = {
 	"scotland":"red",
 	"northern-ireland":"orange",
 	"wales":"yellow",
-	"london":"purple",
+	"london":"white",
 	"north-west":"blue",
 	"north-east":"cyan",
 	"west-midlands":"deeppink",
 	"east-midlands":"green",
-	"south-west":"magenta",
+	"south-west":"navy",
 	"south-east":"coral",
-	"east-of-england":"navy",
+	"east-of-england":"magenta",
 	"yorkshire-and-the-humber":"brown"
 };
 function text_to_id(text) {
@@ -60,13 +60,13 @@ L.geoJSON(las, {
   onEachFeature: function(feature,layer) { 
     layer.on({
       mouseover: function(e) {
-console.log( feature.properties.las);
         jQuery( '.area-info-section' ).hide();
-        jQuery( '#'+feature.properties.region ).show();
+        var toshow = [ feature.properties.region , feature.properties.las ];
         if( feature.properties['county'] ) {
-          jQuery( '#'+feature.properties.county ).show();
+          toshow.push( feature.properties.county );
         }
-        jQuery( '#'+feature.properties.las ).show();
+        for( var i=0;i<toshow.length;++i ) { jQuery( '#'+toshow[i] ).show(); } 
+        jQuery( '#area-debug' ).html( 'SHOWING: '+toshow.join( ', ') );
       },
       mouseout: function(e) {
       }

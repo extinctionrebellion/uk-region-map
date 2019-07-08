@@ -17,3 +17,9 @@ html, body {
 	z-index: 1000;
 	padding: 1em;
 }
+#area-debug {
+	backround-color: rgba(255,0,0,0.5);
+	padding: 1em;
+	font-size: small;
+	font-family: fixed;
+}
