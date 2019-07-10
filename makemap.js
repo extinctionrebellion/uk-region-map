@@ -52,6 +52,7 @@ L.geoJSON(las, {
     return {
       color: "#999999",
       weight: 1,
+      opacity: 0.3,
       fill: true,
       fillColor: colours[feature.properties.region],
       fillOpacity: 0.3,
