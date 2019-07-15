@@ -5,18 +5,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     maxZoom: 21
 }).addTo(map);
 
-function onEachFeature(feature, layer, set, idfield) {
-
-/*
-  if( ! document.getElementById(id) ) {
-    alert( "missing popup info for "+id );
-    return;
-  }
-  var popupContent = document.getElementById(id).innerHTML;
-  layer.bindPopup(popupContent);
-*/
-}
-
 var colours = {
 	"scotland":"red",
 	"northern-ireland":"orange",
@@ -46,6 +34,13 @@ for( var i=0;i<las.features.length;++i ) {
       feature.properties.county = text_to_id(county[feature.properties.lad19cd][2]);
     }
     feature.properties.las = text_to_id(country[feature.properties.lad19cd][0]);
+    feature.properties.codes = [ feature.properties.region , feature.properties.las ];
+    if( feature.properties['county'] ) {
+      feature.properties.codes.push( feature.properties.county );
+    }
+    if( feature.properties.country != feature.properties.region ) {
+      feature.properties.codes.push( feature.properties.country );
+    }
 }
 L.geoJSON(las, {
   style: function (feature) {
@@ -62,15 +57,28 @@ L.geoJSON(las, {
     layer.on({
       mouseover: function(e) {
         jQuery( '.area-info-section' ).hide();
-        var toshow = [ feature.properties.region , feature.properties.las ];
-        if( feature.properties['county'] ) {
-          toshow.push( feature.properties.county );
-        }
-        for( var i=0;i<toshow.length;++i ) { jQuery( '#'+toshow[i] ).show(); } 
-        jQuery( '#area-debug' ).html( 'SHOWING: '+toshow.join( ', ') );
+        for( var i=0;i<feature.properties.codes.length;++i ) { jQuery( '#'+feature.properties.codes[i] ).show(); } 
+        jQuery( '#area-debug' ).html( 'SHOWING: '+feature.properties.codes.join( ', ') );
       },
       mouseout: function(e) {
       }
     });
+    var popup_html = "<div>";
+    for( var i=0;i<feature.properties.codes.length;++i ) { 
+      var id = feature.properties.codes[i];
+      if( document.getElementById(id) ) {
+        popup_html += jQuery( '#'+id).html();
+      }
+    }
+    popup_html += "</div>";
+    layer.bindPopup(popup_html);
+    
+/*
+  if( ! document.getElementById(id) ) {
+    alert( "missing popup info for "+id );
+    return;
+  }
+*/
+
   }
 }).addTo(map);
