@@ -48,25 +48,28 @@ for( var i=0;i<las.features.length;++i ) {
       feature.properties.codes.push( feature.properties.country );
     }
 }
+var FILL_DEFAULT = 0.75;
 L.geoJSON(las, {
   style: function (feature) {
     return {
-      color: "#000000",
+      color: "#666",
       weight: 2,
-      opacity: 0.1,
+      opacity: 0.3,
       fill: true,
       fillColor: colours[feature.properties.region],
-      fillOpacity: 0.75,
+      fillOpacity: FILL_DEFAULT
     };
   },
   onEachFeature: function(feature,layer) { 
     layer.on({
       mouseover: function(e) {
+	layer._path.setAttribute('fill-opacity',FILL_DEFAULT/3);
         jQuery( '.area-info-section' ).hide();
         for( var i=0;i<feature.properties.codes.length;++i ) { jQuery( '#'+feature.properties.codes[i] ).show(); } 
         jQuery( '#area-debug' ).html( 'SHOWING: '+feature.properties.codes.join( ', ') );
       },
       mouseout: function(e) {
+	layer._path.setAttribute('fill-opacity',FILL_DEFAULT);
       }
     });
     var popup_html = "<div>";
