@@ -41,11 +41,6 @@
      <p>
      </p>
   </div>
-  <div class='area-info-section' id='north-east'>
-     <div class='area-title'>North East</div>
-     <p>
-     </p>
-  </div>
   <div class='area-info-section' id='west-midlands'>
      <div class='area-title'>West Midlands</div>
      <p>
@@ -61,18 +56,28 @@
      <p>
      </p>
   </div>
-  <div class='area-info-section' id='south-east'>
-     <div class='area-title'>South East</div>
+  <div class='area-info-section' id='the-north'>
+     <div class='area-title'>The North</div>
      <p>
      </p>
   </div>
-  <div class='area-info-section' id='east-of-england'>
-     <div class='area-title'>East of England</div>
+  <div class='area-info-section' id='oxford-cambridgeshire'>
+     <div class='area-title'>Oxford-Cambridgeshire</div>
      <p>
      </p>
   </div>
-  <div class='area-info-section' id='yorkshire-and-the-humber'>
-     <div class='area-title'>Yorkshire and The Humber</div>
+  <div class='area-info-section' id='the-south'>
+     <div class='area-title'>The South</div>
+     <p>
+     </p>
+  </div>
+  <div class='area-info-section' id='the-east-coast'>
+     <div class='area-title'>The East Coast</div>
+     <p>
+     </p>
+  </div>
+  <div class='area-info-section' id='yorkshire'>
+     <div class='area-title'>Yorkshire</div>
      <p>
      </p>
   </div>

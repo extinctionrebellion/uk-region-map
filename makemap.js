@@ -6,21 +6,23 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 }).addTo(map);
 
 var colours = {
-	"scotland":"red",
-	"northern-ireland":"orange",
-	"wales":"yellow",
-	"london":"white",
-	"north-west":"blue",
-	"north-east":"cyan",
-	"west-midlands":"deeppink",
-	"east-midlands":"green",
-	"south-west":"navy",
-	"south-east":"coral",
-	"east-of-england":"magenta",
-	"yorkshire-and-the-humber":"brown"
+	"south-west":"#cc3333",
+	"london":"#000000",
+        "the-south":"#ffff33",
+	"the-east-coast":"#238b45",
+	"the-north":"#0570b0",
+	"wales":"#00c957",
+	"oxford-cambridgeshire":"#ff7f00",
+	"yorkshire":"#810f7c",
+	"north-west":"#d6604d",
+	"west-midlands":"#74add1",
+	"east-midlands":"#fb9a99",
+	"scotland":"#9e0142",
+	"northern-ireland":"#737373"
 };
+
 function text_to_id(text) {
-  return text.toLowerCase().replace( /[^a-z ]/, '' ).replace( / /g, '-' );
+  return text.toLowerCase().replace( /[^a-z ]/, ' ' ).replace( / /g, '-' );
 }
 
 // convert regions to an index
@@ -28,7 +30,6 @@ var laLookup = {};
 for( var i=0; i<regions.length; ++i ) {
 	laLookup[regions[i][3]] = regions[i];
 }
-console.log( laLookup );
 
 
 for( var i=0;i<las.features.length;++i ) {
@@ -50,12 +51,12 @@ for( var i=0;i<las.features.length;++i ) {
 L.geoJSON(las, {
   style: function (feature) {
     return {
-      color: "#999999",
-      weight: 1,
-      opacity: 0.3,
+      color: "#000000",
+      weight: 2,
+      opacity: 0.1,
       fill: true,
       fillColor: colours[feature.properties.region],
-      fillOpacity: 0.3,
+      fillOpacity: 0.75,
     };
   },
   onEachFeature: function(feature,layer) { 
