@@ -4,10 +4,8 @@
 <title>Region Map</title>
 <script src="leaflet.js"></script>
 <script src="jquery-3.4.1.min.js"></script>
+<script src="data.js"></script>
 <script src="las.js"></script>
-<script src="region.js"></script>
-<script src="country.js"></script>
-<script src="county.js"></script>
 <link rel="stylesheet" href="leaflet.css" />
 <link rel="stylesheet" href="local.css" />
 </head>

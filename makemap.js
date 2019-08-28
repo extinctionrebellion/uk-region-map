@@ -22,18 +22,23 @@ var colours = {
 function text_to_id(text) {
   return text.toLowerCase().replace( /[^a-z ]/, '' ).replace( / /g, '-' );
 }
+
+// convert regions to an index
+var laLookup = {};
+for( var i=0; i<regions.length; ++i ) {
+	laLookup[regions[i][3]] = regions[i];
+}
+console.log( laLookup );
+
+
 for( var i=0;i<las.features.length;++i ) {
     var feature = las.features[i];
-    feature.properties.country = text_to_id(country[feature.properties.lad19cd][2]);
-    if( feature.properties.country == "england" ) {
-      feature.properties.region = text_to_id(region[feature.properties.lad19cd][2]);
-    } else {
-      feature.properties.region = feature.properties.country;
-    }
-    if( county[feature.properties.lad19cd] ) { 
-      feature.properties.county = text_to_id(county[feature.properties.lad19cd][2]);
-    }
-    feature.properties.las = text_to_id(country[feature.properties.lad19cd][0]);
+    var la = laLookup[feature.properties.lad19nm];
+    feature.properties.country = text_to_id(la[0]);
+    feature.properties.region = text_to_id(la[1]);
+    feature.properties.county = text_to_id(la[2]);
+    feature.properties.las = text_to_id(la[3]);
+    
     feature.properties.codes = [ feature.properties.region , feature.properties.las ];
     if( feature.properties['county'] ) {
       feature.properties.codes.push( feature.properties.county );
