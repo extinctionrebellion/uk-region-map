@@ -366,7 +366,7 @@ regions = [
 [ "Wales"   , "North Wales"       , ""                  , "Gwynedd"  ],
 [ "Wales"   , "North Wales"       , ""                  , "Isle of Anglesey" ],
 [ "Wales"   , "North Wales"       , ""                  , "Powys"    ],
-[ "Wales"   , "North Wales"       , ""                  , "Wrexham"  ]
+[ "Wales"   , "North Wales"       , ""                  , "Wrexham"  ],
 [ "Wales"   , "South Wales"       , ""                  , "Blaenau Gwent" ],
 [ "Wales"   , "South Wales"       , ""                  , "Bridgend" ],
 [ "Wales"   , "South Wales"       , ""                  , "Caerphilly" ],
@@ -380,5 +380,5 @@ regions = [
 [ "Wales"   , "South Wales"       , ""                  , "Rhondda Cynon Taf" ],
 [ "Wales"   , "South Wales"       , ""                  , "Swansea"  ],
 [ "Wales"   , "South Wales"       , ""                  , "Torfaen"  ],
-[ "Wales"   , "South Wales"       , ""                  , "Vale of Glamorgan" ],
+[ "Wales"   , "South Wales"       , ""                  , "Vale of Glamorgan" ]
 ];
