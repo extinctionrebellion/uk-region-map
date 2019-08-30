@@ -11,7 +11,7 @@ var colours = {
         "the-south":"#ffff33",
 	"the-east-coast":"#238b45",
 	"the-north":"#0570b0",
-	"north-wales":"#00c957",
+	"north-and-mid-wales":"#00c957",
 	"south-wales":"#A52A2A",
 	"oxford-cambridgeshire":"#ff7f00",
 	"yorkshire":"#810f7c",
