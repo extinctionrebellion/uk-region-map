@@ -1,26 +1,10 @@
+jQuery(document).ready( function() {
 
 var map = L.map('map').setView([54.5, -2], 6);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
     maxZoom: 21
 }).addTo(map);
-
-var colours = {
-	"south-west":"#cc3333",
-	"london":"#000000",
-        "the-south":"#ffff33",
-	"the-east-coast":"#238b45",
-	"the-north":"#0570b0",
-	"north-and-mid-wales":"#00c957",
-	"south-wales":"#A52A2A",
-	"oxford-cambridgeshire":"#ff7f00",
-	"yorkshire":"#810f7c",
-	"north-west":"#d6604d",
-	"west-midlands":"#74add1",
-	"east-midlands":"#fb9a99",
-	"scotland":"#9e0142",
-	"northern-ireland":"#737373"
-};
 
 function text_to_id(text) {
   return text.toLowerCase().replace( /[^a-z ]/, ' ' ).replace( / /g, '-' );
@@ -67,10 +51,11 @@ L.geoJSON(las, {
 	layer._path.setAttribute('fill-opacity',FILL_DEFAULT/3);
         jQuery( '.area-info-section' ).hide();
         for( var i=0;i<feature.properties.codes.length;++i ) { jQuery( '#'+feature.properties.codes[i] ).show(); } 
-        jQuery( '#area-debug' ).html( 'SHOWING: '+feature.properties.codes.join( ', ') );
+        jQuery( '#area-debug' ).html( feature.properties.codes.join( ', ') );
       },
       mouseout: function(e) {
 	layer._path.setAttribute('fill-opacity',FILL_DEFAULT);
+        jQuery( '#area-debug' ).html( '' );
       }
     });
     var popup_html = "<div>";
@@ -92,3 +77,5 @@ L.geoJSON(las, {
 
   }
 }).addTo(map);
+
+});

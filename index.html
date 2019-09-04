@@ -6,14 +6,33 @@
 <script src="jquery-3.4.1.min.js"></script>
 <script src="data.js"></script>
 <script src="las.js"></script>
+<script>
+var colours = {
+	"south-west": "#cc3333",
+	"london": "#000000",
+	"the-south": "#ffff33",
+	"the-east-coast": "#238b45",
+	"the-north": "#0570b0",
+	"north-and-mid-wales": "#00c957",
+	"south-wales": "#A52A2A",
+	"oxford-cambridgeshire": "#ff7f00",
+	"yorkshire": "#810f7c",
+	"north-west": "#d6604d",
+	"west-midlands": "#74add1",
+	"east-midlands": "#fb9a99",
+	"scotland": "#9e0142",
+	"northern-ireland": "#737373"
+};
+</script>
+<script src="makemap.js"></script>
 <link rel="stylesheet" href="leaflet.css" />
 <link rel="stylesheet" href="local.css" />
 </head>
 <body>
 <div id="map"></div>
+<div id='area-debug'></div>
 <div id="area-info"> 
   <h1>Local Info</h1>
-  <div id='area-debug'></div>
   <p>Please hover over the map for more information.</p>
 <!-- regions -->
   <div class='area-info-section' id='scotland'>
@@ -267,5 +286,4 @@
   </div>
 </div>
 </body>
-<script src="makemap.js"></script>
 </html>
