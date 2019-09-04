@@ -54,7 +54,7 @@ h1 {
 .leaflet-popup-content p ,.area-info-section p {
 	margin-top: 0.2em;
 }
-.leaflet-popup-content a {
+.area-info a {
 	color: #fff;
 	font-weight: bold;
 }
