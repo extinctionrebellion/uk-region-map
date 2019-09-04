@@ -5,6 +5,20 @@ html, body {
 }
 #map { height: 100%; width: 100% }
 
+#banner {
+	position: relative;
+	min-height: 150px;
+	padding-right: 155px;
+}
+#logo {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+h1 {
+	font-family: sans-serif;
+}
+
 .area-info-section { display: none; }
 
 #area-info {
@@ -30,6 +44,7 @@ html, body {
 }
 .area-title {
 	font-weight: bold;
+	font-family: sans-serif;
 	border-bottom: solid 1px #fff;
 }
 .leaflet-popup-content .area-title {
