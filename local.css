@@ -7,10 +7,11 @@ html, body {
 
 #banner {
 	position: relative;
-	min-height: 150px;
-	padding-right: 155px;
+	min-height: 100px;
+	padding-right: 105px;
 }
 #logo {
+	width: 100px;
 	position: absolute;
 	right: 0;
 	top: 0;
