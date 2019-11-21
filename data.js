@@ -1,4 +1,4 @@
-regions = [
+la_map = [
 [ "England" , "East Midlands"     , ""                  , "Derby"    ],
 [ "England" , "East Midlands"     , "Derbyshire"        , "Amber Valley" ],
 [ "England" , "East Midlands"     , "Derbyshire"        , "Bolsover" ],
@@ -265,7 +265,7 @@ regions = [
 [ "England" , "South West"     , "Gloucestershire"   , "Gloucester" ],
 [ "England" , "South West"     , "Gloucestershire"   , "Stroud"   ],
 [ "England" , "South West"     , "Gloucestershire"   , "Tewkesbury" ],
-[ "England" , "West Midlands"     , ""                  , "Herefordshire, County of" ],
+[ "England" , "West Midlands"     , "Herefordshire"  , "Herefordshire, County of" ],
 [ "England" , "West Midlands"     , ""                  , "Shropshire" ],
 [ "England" , "West Midlands"     , "Staffordshire"     , "Cannock Chase" ],
 [ "England" , "West Midlands"     , "Staffordshire"     , "East Staffordshire" ],
