@@ -13,7 +13,7 @@ function text_to_id(text) {
 // convert regions to an index
 var laLookup = {};
 for( var i=0; i<regions.length; ++i ) {
-	laLookup[regions[i][3]] = regions[i];
+        laLookup[regions[i][3]] = regions[i];
 }
 
 
@@ -48,13 +48,14 @@ L.geoJSON(las, {
   onEachFeature: function(feature,layer) { 
     layer.on({
       mouseover: function(e) {
-	layer._path.setAttribute('fill-opacity',FILL_DEFAULT/3);
+      
+        layer._path.setAttribute('fill-opacity',FILL_DEFAULT/3);
         jQuery( '.area-info-section' ).hide();
         for( var i=0;i<feature.properties.codes.length;++i ) { jQuery( '#'+feature.properties.codes[i] ).show(); } 
         jQuery( '#area-debug' ).html( feature.properties.codes.join( ', ') );
       },
       mouseout: function(e) {
-	layer._path.setAttribute('fill-opacity',FILL_DEFAULT);
+        layer._path.setAttribute('fill-opacity',FILL_DEFAULT);
         jQuery( '#area-debug' ).html( '' );
       }
     });
