@@ -6,15 +6,9 @@ html, body {
 #map { height: 100%; width: 100% }
 
 #banner {
-	position: relative;
-	min-height: 100px;
-	padding-right: 105px;
 }
 #logo {
 	width: 100px;
-	position: absolute;
-	right: 0;
-	top: 0;
 }
 h1 {
 	font-family: sans-serif;
@@ -28,9 +22,9 @@ h1 {
 	right: 0;
 	background-color: rgba(0,0,0,0.5);
         color: white;
-	width:40%;
 	z-index: 1000;
 	padding: 1em;
+	text-align: center;
 }
 #area-debug {
 	background-color: rgba(255,255,255,0.5);
