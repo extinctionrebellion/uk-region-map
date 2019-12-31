@@ -7,8 +7,9 @@ var nations = {};
 var laLookup = {};
 var FILL_DEFAULT = 0.5;
 var WEIGHT_DEFAULT = 2;
-var white_icon = make_icon('#fff');
+var white_icon = make_icon('#fff', true);
 var plain_icon = make_icon('#999');
+var feature_icon = make_icon('#999',true);
 
 function googleSheetToGrid( sheet ) {
   //var rows = response.feed["gs$rowCount"];
@@ -51,13 +52,16 @@ function text_to_id(text) {
   return text.toLowerCase().replace( /[^a-z ]/, ' ' ).replace( / /g, '-' );
 }
 
-function make_icon( colour ) {
+function make_icon( colour, big ) {
+  var scale = 1;
+  if( big ) { scale = 2; }
   return L.icon({
             iconUrl: 'data:image/svg+xml;charset=utf-8,%3Csvg version%3D"1.1" id%3D"Layer_1" xmlns%3D"http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" xmlns%3Axlink%3D"http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink" x%3D"0px" y%3D"0px" viewBox%3D"0 0 365 560" enable-background%3D"new 0 0 365 560" xml%3Aspace%3D"preserve"%3E%3Cg%3E%3Cpath stroke%3D"%23000" stroke-width%3D"20px" fill%3D"'+encodeURIComponent(colour)+'" d%3D"M182.9%2C551.7c0%2C0.1%2C0.2%2C0.3%2C0.2%2C0.3S358.3%2C283%2C358.3%2C194.6c0-130.1-88.8-186.7-175.4-186.9 C96.3%2C7.9%2C7.5%2C64.5%2C7.5%2C194.6c0%2C88.4%2C175.3%2C357.4%2C175.3%2C357.4S182.9%2C551.7%2C182.9%2C551.7z " %2F%3E%3C%2Fg%3E%3C%2Fsvg%3E',
 //M122.2%2C187.2c0-33.6%2C27.2-60.8%2C60.8-60.8 c33.6%2C0%2C60.8%2C27.2%2C60.8%2C60.8S216.5%2C248%2C182.9%2C248C149.4%2C248%2C122.2%2C220.8%2C122.2%2C187.2z
-            iconSize: [10, 16],
-            iconAnchor: [5,16],
-            popupAnchor: [0, -20],
+                 iconSize: [scale*10, scale*16],
+               iconAnchor: [scale*5,  scale*16],
+            tooltipAnchor: [scale*6,  scale*-8],
+              popupAnchor: [scale*0,  scale*-20],
 /*
     shadowUrl: 'my-icon-shadow.png',
     shadowSize: [68, 95],
@@ -70,23 +74,31 @@ function make_icon( colour ) {
 function featureCounty( county ) {
   var c_layers = county.polygons;
   // if LA is not in a county just reveal the current LA
-  for( var i=0; i<c_layers.length; i++ ) {
-    c_layers[i]._path.setAttribute('fill-opacity',FILL_DEFAULT/3);
-    c_layers[i]._path.setAttribute('stroke-width',0);
+  if( c_layers ) {
+    for( var i=0; i<c_layers.length; i++ ) {
+      c_layers[i]._path.setAttribute('fill-opacity',FILL_DEFAULT/3);
+      c_layers[i]._path.setAttribute('stroke-width',0);
+    }
   }
   var c_markers = county.markers;
   if( c_markers ) {
     for( var i=0; i<c_markers.length; i++ ) {
-      c_markers[i].setIcon( white_icon );
+      var icon = c_markers[i].xr_feature_icon;
+      c_markers[i].setIcon( icon );
+      if( map.getZoom()>=7 ) { 
+        c_markers[i].openTooltip();
+      }
     }
   }
 }
 
 function unfeatureCounty( county ) {
   var c_layers = county.polygons;
-  for( var i=0; i<c_layers.length; i++ ) {
-    c_layers[i]._path.setAttribute('fill-opacity',FILL_DEFAULT);
-    c_layers[i]._path.setAttribute('stroke-width',WEIGHT_DEFAULT);
+  if( c_layers ) {
+    for( var i=0; i<c_layers.length; i++ ) {
+      c_layers[i]._path.setAttribute('fill-opacity',FILL_DEFAULT);
+      c_layers[i]._path.setAttribute('stroke-width',WEIGHT_DEFAULT);
+    }
   }
   var c_markers = county.markers;
   if( c_markers ) {
@@ -100,7 +112,7 @@ function unfeatureCounty( county ) {
 */
     for( var i=0; i<c_markers.length; i++ ) {
       var icon = c_markers[i].xr_usual_icon;
-      c_markers[i].setIcon( icon );
+      c_markers[i].setIcon( icon ).closeTooltip();
     }
   }
 }
@@ -126,7 +138,8 @@ function loadData() {
       var records = googleSheetToData( response, 1 );
       for( var i=0; i<records.length; ++i ) {
         var region = records[i];
-        region["icon"] = make_icon( region["colour"] );
+        region["usual_icon"] = make_icon( region["colour"] );
+        region["feature_icon"] = make_icon( region["colour"], true );
         region.polygons = [];
         region.markers = [];
         region.bounds = null;
@@ -201,6 +214,7 @@ function loadData2() {
               polygons: []
             };
             counties[ county_id ] = county;
+            console.log( "Unexpected county", la );
           }
           feature.properties.county_id = county_id;
           feature.properties.county = county;
@@ -293,9 +307,9 @@ function loadData4() {
       var records = googleSheetToData( response, 3 );
       for( var i=0;i<records.length;++i ) {
         var record = records[i];
-        var nation;
-        var region;
-        var county;
+        var nation = null;
+        var region = null;
+        var county = null;
 
         if( record["nation"] )    { nation = nations[ text_to_id(record["nation"])]; }
         if( record["xr region"] ) { region = regions[ text_to_id(record["xr region"])]; }
@@ -304,19 +318,22 @@ function loadData4() {
         if( record["latlong"] ) {
 
           var ll = record["latlong"].split( /\s*,\s*/ );
-          var icon;
+          var usual_icon = plain_icon;
+          var feature_icon = feature_icon;
           if( region ) {
-            icon = region.icon;
-          } else {
-            icon = plain_icon;
+            usual_icon = region.usual_icon;
+            feature_icon = region.feature_icon;
           }
-          var marker = L.marker(ll,{ icon: icon } );
-          marker.xr_usual_icon = icon;
+          var marker = L.marker(ll,{ icon: usual_icon } );
+          marker.xr_usual_icon = usual_icon;
+          marker.xr_feature_icon = feature_icon;
           marker.xr_record = record;
           marker.addTo(map);
           if( nation ) { nation.markers.push( marker ); }
           if( region ) { region.markers.push( marker ); }
           if( county ) { county.markers.push( marker ); }
+
+          marker.bindTooltip(record["name"]);
             
           var popup_html = "<div>";
           popup_html += "<h2>"+record["name"]+"</h2>";
