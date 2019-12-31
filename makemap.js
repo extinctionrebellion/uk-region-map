@@ -214,7 +214,7 @@ function loadData2() {
               polygons: []
             };
             counties[ county_id ] = county;
-            console.log( "Unexpected county", la );
+            //console.log( "Unexpected county", la );
           }
           feature.properties.county_id = county_id;
           feature.properties.county = county;
