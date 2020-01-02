@@ -7,7 +7,6 @@ var nations = {};
 var laLookup = {};
 var FILL_DEFAULT = 0.5;
 var WEIGHT_DEFAULT = 2;
-var white_icon = make_icon('#fff', true);
 var plain_icon = make_icon('#999');
 var feature_icon = make_icon('#999',true);
 
@@ -163,11 +162,13 @@ function loadData2() {
       for( var i=0; i<records.length; ++i ) {
         laLookup[records[i]["local authority"]] = records[i];
       }
-      
       for( var i=0;i<las.features.length;++i ) {
         var feature = las.features[i];
         var la = laLookup[feature.properties.lad19nm];
-
+        if( !la ) { 
+          console.log( "Failed to look up feature", feature );
+          continue;
+        }
         var nation_id = text_to_id(la["nation"]);
         if( nation_id ) {
           var nation = nations[ nation_id ];
@@ -235,6 +236,10 @@ function loadData3() {
   
   L.geoJSON(las, {
     style: function (feature) {
+      if( !feature.properties.region ) {
+        console.log( "Missing region info on feature", feature );
+        return {};
+      }
       return {
         color: feature.properties.region.colour,
         weight: WEIGHT_DEFAULT,
@@ -333,7 +338,9 @@ function loadData4() {
           if( region ) { region.markers.push( marker ); }
           if( county ) { county.markers.push( marker ); }
 
-          marker.bindTooltip(record["name"]);
+          var tooltip = L.tooltip({"className":"place-name","direction":"left", "opacity":0.7 });
+          tooltip.setContent(record["name"]);
+          marker.bindTooltip(tooltip);
             
           var popup_html = "<div>";
           popup_html += "<h2>"+record["name"]+"</h2>";
