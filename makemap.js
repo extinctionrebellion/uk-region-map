@@ -320,9 +320,17 @@ function loadData4() {
         if( record["xr region"] ) { region = regions[ text_to_id(record["xr region"])]; }
         if( record["county"] )    { county = counties[text_to_id(record["county"])]; }
 
+        var ll=null;
         if( record["latlong"] ) {
+          if( record["latlong"].match( /^\s*-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?\s*$/ ) ) {
+            ll = record["latlong"].trim().split( /\s*,\s*/ );
+          } else {
+            console.log( "Unexpected LatLong data", record );
+          }
+	}
 
-          var ll = record["latlong"].split( /\s*,\s*/ );
+        if( ll ) {
+
           var usual_icon = plain_icon;
           var feature_icon = feature_icon;
           if( region ) {
