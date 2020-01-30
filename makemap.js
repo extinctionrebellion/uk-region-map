@@ -320,17 +320,21 @@ function loadData4() {
         if( record["xr region"] ) { region = regions[ text_to_id(record["xr region"])]; }
         if( record["county"] )    { county = counties[text_to_id(record["county"])]; }
 
-        var ll=null;
-        if( record["latlong"] ) {
-          if( record["latlong"].match( /^\s*-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?\s*$/ ) ) {
-            ll = record["latlong"].trim().split( /\s*,\s*/ );
-          } else {
-            console.log( "Unexpected LatLong data", record );
+        var lls=[];
+        var llcodes = [ 'latlong', 'latlong2', 'latlong3', 'latlong4', 'latlong5', 'latlong6', 'latlong7', 'latlong8', 'latlong9' ];
+   
+        for( var j=0;j<llcodes.length;++j ) { 
+          if( record[llcodes[j]] ) {
+            if( record[llcodes[j]].match( /^\s*-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?\s*$/ ) ) {
+              lls.push(  record[llcodes[j]].trim().split( /\s*,\s*/ ) );
+            } else {
+              console.log( "Unexpected "+llcodes[j]+" data", record );
+            }
           }
-	}
+        }
 
-        if( ll ) {
-
+        for( var j=0;j<lls.length;++j ) {
+          var ll = lls[j];
           var usual_icon = plain_icon;
           var feature_icon = feature_icon;
           if( region ) {
