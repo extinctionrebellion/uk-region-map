@@ -366,25 +366,25 @@ function loadData4() {
             popup_html += "<div>County affiliation: "+record["county"]+"</div>";
           }
           if( record["page"] ) {
-            popup_html += "<div><a target='_new" href='"+record["page"]+"'>Facebook Page</a></div>";
+            popup_html += "<div><a target='_blank' href='"+record["page"]+"'>Facebook Page</a></div>";
           }
           if( record["group"] ) {
-            popup_html += "<div><a target='_new" href='"+record["group"]+"'>Facebook Group</a></div>";
+            popup_html += "<div><a target='_blank' href='"+record["group"]+"'>Facebook Group</a></div>";
           }
           if( record["twitter"] ) {
-            popup_html += "<div><a target='_new" href='"+record["twitter"]+"'>Twitter</a></div>";
+            popup_html += "<div><a target='_blank' href='"+record["twitter"]+"'>Twitter</a></div>";
           }
           if( record["instagram"] ) {
-            popup_html += "<div><a target='_new" href='"+record["instagram"]+"'>Instagram</a></div>";
+            popup_html += "<div><a target='_blank' href='"+record["instagram"]+"'>Instagram</a></div>";
           }
           if( record["website"] ) {
-            popup_html += "<div><a target='_new" href='"+record["website"]+"'>Website</a></div>";
+            popup_html += "<div><a target='_blank' href='"+record["website"]+"'>Website</a></div>";
           }
           if( record["youtube"] ) {
-            popup_html += "<div><a target='_new" href='"+record["youtube"]+"'>Youtube</a></div>";
+            popup_html += "<div><a target='_blank' href='"+record["youtube"]+"'>Youtube</a></div>";
           }
           if( record["action network"] ) {
-            popup_html += "<div><a target='_new" href='"+record["action network"]+"'>Action Network</a></div>";
+            popup_html += "<div><a target='_blank' href='"+record["action network"]+"'>Action Network</a></div>";
           }
           if( record["email"] ) {
             popup_html += "<div><a href='mailto:"+record["email"]+"'>"+record["email"]+"</a></div>";
