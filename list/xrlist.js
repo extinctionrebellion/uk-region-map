@@ -35,15 +35,15 @@ function googleSheetToData( sheet, heading_row ) {
   return records;
 }
 
-function XRList( id, area ) {
+function XRList( id, area, layout ) {
   jQuery(document).ready( function(){
-    XRListWhenReady( id, area );
+    XRListWhenReady( id, area, layout  );
   });
 }
 
 var XRDATA = null;
 var XRLOADING = false;
-async function XRListWhenReady( id, area ) {
+async function XRListWhenReady( id, area, layout  ) {
   if( !XRDATA ) {
     if( !XRLOADING ) { 
       XRLOADING = true;
@@ -62,14 +62,8 @@ async function XRListWhenReady( id, area ) {
     }
   }  
 
-  var table = jQuery( '<table>' );
-  var headings = [ 'name', 'category', 'county', 'xr region', 'nation', 'email', 'page', 'group', 'twitter', 'instagram', 'youtube', 'web' ];
   var records = googleSheetToData( XRDATA, 3 );
-  var trh = jQuery( '<tr>' );
-  for( var h=0;h<headings.length;++h ) {
-    trh.append( jQuery( '<th></th>' ).text( headings[h] ));
-  }
-  table.append( trh );
+  var filteredRecords = [];
   for( var i=0;i<records.length;++i ) {
     var record = records[i];
     if( area 
@@ -78,12 +72,81 @@ async function XRListWhenReady( id, area ) {
      && ( !record['nation'] || area.toLowerCase() != record['nation'].toLowerCase() ) ) {
       continue;
     }
+    filteredRecords.push( record );
+  }
+
+  var rendered;
+  if( layout == "table" ) {
+    rendered = XRRenderTable( filteredRecords );
+  } 
+  if( layout == "list" ) {
+    rendered = XRRenderList( filteredRecords );
+  } 
+  jQuery( '#'+id ).text('').append( rendered );    
+}
+
+function XRRenderList( records ) {
+  var ul = jQuery( '<ul>' );
+  for( var i=0;i<records.length;++i ) {
+    var record = records[i];
+    var li = jQuery( '<li>' );
+    li.append( jQuery( '<b></b>' ).text( record.name ) );
+    if( record.email ) {
+      li.append( jQuery( '<span> [</span>' ) );
+      li.append( jQuery( '<a></a>' ).attr( 'href','mailto:'+record.email).text('Email') );
+      li.append( jQuery( '<span>]</span>' ) );
+    }
+    if( record.page ) {
+      li.append( jQuery( '<span> [</span>' ) );
+      li.append( jQuery( '<a></a>' ).attr( 'href',record.page).text('FB Page') );
+      li.append( jQuery( '<span>]</span>' ) );
+    }
+    if( record.group ) {
+      li.append( jQuery( '<span> [</span>' ) );
+      li.append( jQuery( '<a></a>' ).attr( 'href',record.group).text('FB Group') );
+      li.append( jQuery( '<span>]</span>' ) );
+    }
+    if( record.twitter ) {
+      li.append( jQuery( '<span> [</span>' ) );
+      li.append( jQuery( '<a></a>' ).attr( 'href',record.twitter).text('Twitter') );
+      li.append( jQuery( '<span>]</span>' ) );
+    }
+    if( record.instagram ) {
+      li.append( jQuery( '<span> [</span>' ) );
+      li.append( jQuery( '<a></a>' ).attr( 'href',record.instagram).text('Instagram') );
+      li.append( jQuery( '<span>]</span>' ) );
+    }
+    if( record.youtube ) {
+      li.append( jQuery( '<span> [</span>' ) );
+      li.append( jQuery( '<a></a>' ).attr( 'href',record.youtube).text('YouTube') );
+      li.append( jQuery( '<span>]</span>' ) );
+    }
+    if( record.web ) {
+      li.append( jQuery( '<span> [</span>' ) );
+      li.append( jQuery( '<a></a>' ).attr( 'href',record.web).text('Website') );
+      li.append( jQuery( '<span>]</span>' ) );
+    }
+    ul.append( li );
+  }
+  return ul;
+}
+
+function XRRenderTable( records ) {
+  var table = jQuery( '<table>' );
+  var headings = [ 'name', 'category', 'county', 'xr region', 'nation', 'email', 'page', 'group', 'twitter', 'instagram', 'youtube', 'web' ];
+  var trh = jQuery( '<tr>' );
+  for( var h=0;h<headings.length;++h ) {
+    trh.append( jQuery( '<th></th>' ).text( headings[h] ));
+  }
+  table.append( trh );
+  for( var i=0;i<records.length;++i ) {
+    var record = records[i];
     var tr = jQuery( '<tr>' );
     for( var h=0;h<headings.length;++h ) {
-      tr.append( jQuery( '<td></td>' ).text( record[headings[h]] ));
+      tr.append( jQuery( '<td></td>' ).css( 'background-color','#ccc' ).text( record[headings[h]]));
     }
     table.append( tr );
   }  
-  jQuery( '#'+id ).append( table );    
+  return table;
 }
 
