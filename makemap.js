@@ -254,7 +254,7 @@ function loadData3() {
       if( uk.bounds ) {
         uk.bounds.extend( layer.getBounds() );
       } else {
-        uk.bounds = layer.getBounds();
+        uk.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
       }
 
       var nation = feature.properties.nation;
@@ -263,7 +263,7 @@ function loadData3() {
         if( nation.bounds ) {
           nation.bounds.extend( layer.getBounds() );
         } else {
-          nation.bounds = layer.getBounds();
+          nation.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
         }
       }
   
@@ -273,7 +273,7 @@ function loadData3() {
         if( region.bounds ) {
           region.bounds.extend( layer.getBounds() );
         } else {
-          region.bounds = layer.getBounds();
+          region.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
         }
       }
 
@@ -283,7 +283,7 @@ function loadData3() {
         if( county.bounds ) {
           county.bounds.extend( layer.getBounds() );
         } else {
-          county.bounds = layer.getBounds();
+          county.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
         }
       }
   
