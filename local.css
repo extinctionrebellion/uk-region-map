@@ -9,8 +9,18 @@ html, body {
 }
 #logo {
 	max-width: 100px;
+	height: 2em;
+	float: left;
+	padding: 0em 0.5em 0.5em 0;
 }
-h1 {
+#banner h1 {
+	font-size: 110%;
+	font-weight: bold;
+	font-family: sans-serif;
+}
+#banner h2 {
+	font-size: 110%;
+	font-weight: bold;
 	font-family: sans-serif;
 }
 
@@ -24,7 +34,7 @@ h1 {
         color: white;
 	z-index: 1000;
 	padding: 1em;
-	text-align: center;
+	text-align: left;
 	max-width: 25%;
 	font-size: 90%;
 }
@@ -59,3 +69,5 @@ h1 {
 	font-size: 7pt !important;
 	padding: 2pt 4pt !important;
 }
+
+@media only screen and (min-width: 401px) and (max-width: 960px) {

@@ -441,7 +441,7 @@ function addQuickJumps() {
     var id = select.val();
     window.location.hash = '#'+id;
   });
-  jQuery( '#controls' ).append( select );
+  jQuery( '#controls' ).text('').append( select );
 
   $(window).on('hashchange', update_from_hash );
 
