@@ -407,41 +407,60 @@ function loadData4() {
 }
 
 var zoom_to = {};
-var select = 'uk';
+var select;
 function addQuickJumps() {
   var nation_ids = Object.keys(nations).sort(); 
   var region_ids = Object.keys(regions).sort(); 
   var county_ids = Object.keys(counties).sort(); 
-  var list = [];
   zoom_to['uk'] = uk;
-  list.push( 'uk' );
+
+  var buttons = [];
+  buttons.push( 'uk' );
   for( var i=0; i<nation_ids.length; ++i ) {
     var id = nation_ids[i];
-    zoom_to[id] = nations[id];
-    list.push( id );
+    // only add nations that are not also regions (England)
+    if( !regions[id] ) {
+      zoom_to[id] = nations[id];
+      buttons.push( id );
+    }
   }
   for( var i=0; i<region_ids.length; ++i ) {
     var id = region_ids[i];
     zoom_to[id] = regions[id];
-    list.push( id );
+    buttons.push( id );
   }
   for( var i=0; i<county_ids.length; ++i ) {
     var id = county_ids[i];
-    zoom_to[id] = counties[id];
-    list.push( id );
+    // don't add county info if there's a region of the same name
+    if( !zoom_to[id] ) {
+      zoom_to[id] = counties[id];
+    }
   }
-  select = jQuery( '<select></select>' );
-  for( var i=0; i<list.length; i++ ) {
+
+  var bdiv = jQuery( '#jumps' );
+  for( var i=0; i<buttons.length; ++i ) {
+    var id = buttons[i];
+    var button = jQuery( '<a class="jump"></a>' );
+    if( zoom_to[id]["colour"] ) { button.css( "backgroundColor",zoom_to[id]["colour"]); }
+    if( zoom_to[id]["text"] ) { button.css( "color",zoom_to[id]["text"]); }
+    button.text( zoom_to[id].label );
+    bdiv.append( button );
+    button.click( function(){ window.location.hash = '#'+this.id; }.bind( {id:id} ) );
+  }
+
+  select = jQuery( '<select><option>Show county...</option></select>' );
+  for( var i=0; i<county_ids.length; ++i ) {
+    var id = county_ids[i];
     var option = jQuery('<option></option>');
-    option.attr( 'value',  list[i] );
-    option.text( zoom_to[list[i]].label );
+    option.attr( 'value',  id );
+    option.text( zoom_to[id].label );
     select.append( option );
   }
   select.change(function(){
     var id = select.val();
     window.location.hash = '#'+id;
   });
-  jQuery( '#controls' ).text('').append( select );
+  jQuery( '#county_control' ).text('').append( select );
 
   $(window).on('hashchange', update_from_hash );
 

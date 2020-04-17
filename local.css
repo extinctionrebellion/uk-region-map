@@ -69,5 +69,18 @@ html, body {
 	font-size: 7pt !important;
 	padding: 2pt 4pt !important;
 }
-
+#jumps {
+	text-align: center;
+}
+.jump {
+	font-family: sans-serif;
+	display: inline-block;
+	margin: 0.2em;
+	border-radius: 1em;
+	padding: 0.1em 0.5em;
+	background-color: #999;
+	cursor: pointer;
+	font-weight: normal;
+	border: solid 1px #333;
+}
 @media only screen and (min-width: 401px) and (max-width: 960px) {
