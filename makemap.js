@@ -1,5 +1,6 @@
 jQuery(document).ready( function() {
 
+var map;
 var uk;
 var regions = {};
 var counties = {};
@@ -9,6 +10,11 @@ var FILL_DEFAULT = 0.5;
 var WEIGHT_DEFAULT = 2;
 var plain_icon = make_icon('#999');
 var feature_icon = make_icon('#999',true);
+var zoom_to = {};
+var select;
+
+update_from_hash();
+$('#miniclosed').click( ()=>{ $('#miniopen').show(); $('#miniclosed').hide(); } );
 
 function googleSheetToGrid( sheet ) {
   //var rows = response.feed["gs$rowCount"];
@@ -117,7 +123,7 @@ function unfeatureCounty( county ) {
 }
 
 // make the map
-var map = L.map('map').setView([54.5, -2], 6);
+map = L.map('map').setView([54.5, -2], 6);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
     maxZoom: 21
@@ -224,6 +230,14 @@ function loadData2() {
 
         feature.properties.la = la;
       }
+
+      counties[ "channel-islands" ] = {
+        label: "Channel Islands",
+        bounds: null,
+        markers: [],
+        polygons: []
+      };
+
       loadData3();     
     }
   });
@@ -233,7 +247,7 @@ function loadData2() {
 function loadData3() {
   // this data is stored locally so we don't have the same async issue as with the jquery calls
   uk = {"label":"United Kingdom"};
-  
+
   L.geoJSON(las, {
     style: function (feature) {
       if( !feature.properties.region ) {
@@ -299,6 +313,10 @@ function loadData3() {
 
     }
   }).addTo(map);
+
+  // hack to make channel islands a fake county for jumps
+  counties["channel-islands"].bounds = L.latLngBounds( counties["jersey"].bounds.getNorthWest(), counties["jersey"].bounds.getSouthEast() );
+  counties["channel-islands"].bounds.extend( counties["guernsey"].bounds );
   
   loadData4();
 }
@@ -406,8 +424,6 @@ function loadData4() {
   });
 }
 
-var zoom_to = {};
-var select;
 function addQuickJumps() {
   var nation_ids = Object.keys(nations).sort(); 
   var region_ids = Object.keys(regions).sort(); 
@@ -471,10 +487,24 @@ function update_from_hash() {
   var hash = window.location.hash.replace( /^#/, '' );
   if( !hash ) { return; }
 
-  if( zoom_to[hash] && zoom_to[hash]['bounds']) {
-    map.fitBounds( zoom_to[hash].bounds );
-    select.val(hash);
+  var minimal = false;
+  var codes = hash.split( /,/ );
+  for( var i=0;i<codes.length;++i ) {
+    var code = codes[i];
+    if( zoom_to[code] && zoom_to[code]['bounds']) {
+      map.fitBounds( zoom_to[code].bounds );
+      select.val(code);
+    }
+    if( code == "minimal" ) {
+      minimal = true;
+    }
   }
+  if( minimal ) {
+    $('body').addClass( "minimal" );
+  } else {
+    $('body').removeClass( "minimal" );
+  } 
+      
 }
 
 }); //end of ready

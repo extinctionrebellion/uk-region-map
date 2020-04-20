@@ -24,6 +24,21 @@ html, body {
 	font-family: sans-serif;
 }
 
+#minibanner {
+	display: none;
+}
+.minimal #banner {
+	display: none;
+}
+.minimal #minibanner {
+	display: block;
+	cursor: pointer;
+}
+#minibanner #miniopen {
+	display: none;
+}
+
+
 .area-info-section { display: none; }
 
 #area-info {
