@@ -83,11 +83,12 @@ async function XRListWhenReady( id, area, layout  ) {
   } 
   if( layout == "table" ) {
     rendered = XRRenderTable( filteredRecords );
+    jQuery( '#'+id ).text('').append( rendered ).append( '<p>This information is curated by the National and Regional Development circle. Please contact <a href="mailto:'+update_email+'">'+update_email+'</a> with any corrections or additions.</p>' );    
   } 
   if( layout == "list" ) {
     rendered = XRRenderList( filteredRecords );
+    jQuery( '#'+id ).text('').append( rendered ).append( '<p>This information is curated by the National and Regional Development circle. Please contact <a href="mailto:'+update_email+'">'+update_email+'</a> with any corrections or additions.</p>' );    
   } 
-  jQuery( '#'+id ).text('').append( rendered ).append( '<p>This information is curated by the National and Regional Development circle. Please contact <a href="mailto:'+update_email+'">'+update_email+'</a> with any corrections or additions.</p>' );    
 }
 
 function XRRenderList( records ) {
@@ -165,7 +166,10 @@ function XRRenderReview( records ) {
     ul1.append( li1 );
     li1.append( ul2 );
     for( var h=0;h<headings.length;++h ) {
-      ul2.append( jQuery( '<li></li>' ).text( record[headings[h]]));
+      var li2 = jQuery( '<li>' );
+      ul2.append( li2 );
+      li2.append( jQuery( '<strong>' ).text( headings[h]+": " ) );
+      li2.append( jQuery( '<span>' ).text( record[headings[h]] ));
     }
   }  
   return ul1;
