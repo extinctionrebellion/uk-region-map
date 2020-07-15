@@ -161,7 +161,7 @@ function XRRenderReview( records ) {
   var headings = [ 'name', 'category', 'county', 'xr region', 'nation', 'email', 'page', 'group', 'twitter', 'instagram', 'youtube', 'web' ];
   for( var i=0;i<records.length;++i ) {
     var record = records[i];
-    var li1 = jQuery( '<li>' );
+    var li1 = jQuery( '<li>' ).text( record['name'] );
     var ul2 = jQuery( '<ul>' );
     ul1.append( li1 );
     li1.append( ul2 );
@@ -169,7 +169,11 @@ function XRRenderReview( records ) {
       var li2 = jQuery( '<li>' );
       ul2.append( li2 );
       li2.append( jQuery( '<strong>' ).text( headings[h]+": " ) );
-      li2.append( jQuery( '<span>' ).text( record[headings[h]] ));
+      if( record[headings[h]].match( '/^http' ) ) {
+        li2.append( jQuery( '<a>' ).attr( "href", record[headings[h]] ).text( record[headings[h]] ));
+      } else {
+        li2.append( jQuery( '<span>' ).text( record[headings[h]] ));
+      }
     }
   }  
   return ul1;
