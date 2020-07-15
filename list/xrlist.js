@@ -1,4 +1,6 @@
 
+var update_email = "christophergutteridge@gmail.com";
+
 function googleSheetToGrid( sheet ) {
   //var rows = response.feed["gs$rowCount"];
   //var cols = response.feed["gs$colCount"];
@@ -76,13 +78,16 @@ async function XRListWhenReady( id, area, layout  ) {
   }
 
   var rendered;
+  if( layout == "review" ) {
+    rendered = XRRenderReview( filteredRecords );
+  } 
   if( layout == "table" ) {
     rendered = XRRenderTable( filteredRecords );
   } 
   if( layout == "list" ) {
     rendered = XRRenderList( filteredRecords );
   } 
-  jQuery( '#'+id ).text('').append( rendered ).append( '<p>This information is curated by the National and Regional Development circle. Please contact <a href="mailto:xr-regionaldevelopment@protonmail.com">xr-regionaldevelopment@protonmail.com</a> with any corrections or additions.</p>' );    
+  jQuery( '#'+id ).text('').append( rendered ).append( '<p>This information is curated by the National and Regional Development circle. Please contact <a href="mailto:'+update_email+'">'+update_email+'</a> with any corrections or additions.</p>' );    
 }
 
 function XRRenderList( records ) {
@@ -148,5 +153,21 @@ function XRRenderTable( records ) {
     table.append( tr );
   }  
   return table;
+}
+
+function XRRenderReview( records ) {
+  var ul1 = jQuery( '<ul>' );
+  var headings = [ 'name', 'category', 'county', 'xr region', 'nation', 'email', 'page', 'group', 'twitter', 'instagram', 'youtube', 'web' ];
+  for( var i=0;i<records.length;++i ) {
+    var record = records[i];
+    var li1 = jQuery( '<li>' );
+    var ul2 = jQuery( '<ul>' );
+    ul1.append( li1 );
+    li1.append( ul2 );
+    for( var h=0;h<headings.length;++h ) {
+      ul2.append( jQuery( '<li></li>' ).text( record[headings[h]]));
+    }
+  }  
+  return ul1;
 }
 
