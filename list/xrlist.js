@@ -89,7 +89,7 @@ async function XRListWhenReady( id, area, layout  ) {
     rendered = XRRenderList( filteredRecords );
     rendered.append( '<p>This information is curated by the National and Regional Development circle. Please contact <a href="mailto:'+update_email+'">'+update_email+'</a> with any corrections or additions.</p>' );    
   } 
-  var jQuery( '#'+id ).text('').append( rendered );
+  jQuery( '#'+id ).text('').append( rendered );
 }
 
 function XRRenderList( records ) {
