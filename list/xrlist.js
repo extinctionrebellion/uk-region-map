@@ -169,7 +169,9 @@ function XRRenderReview( records ) {
       var li2 = jQuery( '<li>' );
       ul2.append( li2 );
       li2.append( jQuery( '<strong>' ).text( headings[h]+": " ) );
-      if( record[headings[h]].match( /^http/ ) ) {
+      if( ! record[headings[h] ) {
+        li2.append( jQuery( '<span style="color: #ccc">no data</span>' ));
+      } else if (record[headings[h]].match( /^http/ ) ) {
         li2.append( jQuery( '<a>' ).attr( "href", record[headings[h]] ).text( record[headings[h]] ));
       } else {
         li2.append( jQuery( '<span>' ).text( record[headings[h]] ));
