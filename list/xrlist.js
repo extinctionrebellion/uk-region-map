@@ -14,7 +14,7 @@ async function XRListWhenReady( id, area, layout  ) {
     if( !XRLOADING ) { 
       XRLOADING = true;
       jQuery.ajax({
-        url: 'http://cache.xrgroups.org/xrgroups-v2.php',
+        url: 'https://cache.xrgroups.org/xrgroups-v2.php',
         jsonp: "callback",
         dataType: "jsonp",
         success: function( response ) {
