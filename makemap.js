@@ -136,13 +136,12 @@ loadData();
 function loadData() {
   // loads regions
   jQuery.ajax({
-    url: 'https://spreadsheets.google.com/feeds/cells/1KxpfpHzCstsg_hvG8v6ksgjt3ghAHb1URwW41mW7Vgs/2/public/full?alt=json-in-script',
+    url: 'https://cache.xrgroups.org/xrgroups-v2.php',
     jsonp: "callback",
     dataType: "jsonp",
     success: function( response ) {
-      var records = googleSheetToData( response, 1 );
-      for( var i=0; i<records.length; ++i ) {
-        var region = records[i];
+      for( var i=0; i<response.region.length; ++i ) {
+        var region = response.region[i];
         region["usual_icon"] = make_icon( region["colour"] );
         region["feature_icon"] = make_icon( region["colour"], true );
         region.polygons = [];
@@ -150,24 +149,13 @@ function loadData() {
         region.bounds = null;
         regions[region.id] = region;
       }
-      loadData2();     
-    }
-  });
-}
-
-function loadData2() {
-  // loads local authority to county & region data
-  jQuery.ajax({
-    url: 'https://spreadsheets.google.com/feeds/cells/1KxpfpHzCstsg_hvG8v6ksgjt3ghAHb1URwW41mW7Vgs/1/public/full?alt=json-in-script',
-    jsonp: "callback",
-    dataType: "jsonp",
-    success: function( response ) {
-      var records = googleSheetToData( response, 1 );
 
       // convert la_map to an index
-      for( var i=0; i<records.length; ++i ) {
-        laLookup[records[i]["local authority"]] = records[i];
+      for( var i=0; i<response.county.length; ++i ) {
+        laLookup[response.county[i]["local authority"]] = response.county[i];
       }
+  
+      // 
       for( var i=0;i<las.features.length;++i ) {
         var feature = las.features[i];
         var la = laLookup[feature.properties.lad19nm];
@@ -238,98 +226,81 @@ function loadData2() {
         polygons: []
       };
 
-      loadData3();     
-    }
-  });
-}
-
-
-function loadData3() {
-  // this data is stored locally so we don't have the same async issue as with the jquery calls
-  uk = {"label":"United Kingdom"};
-
-  L.geoJSON(las, {
-    style: function (feature) {
-      if( !feature.properties.region ) {
-        console.log( "Missing region info on feature", feature );
-        return {};
-      }
-      return {
-        color: feature.properties.region.colour,
-        weight: WEIGHT_DEFAULT,
-        opacity: 0.3,
-        fill: true,
-        fillColor: feature.properties.region.colour,
-        fillOpacity: FILL_DEFAULT
-      };
-    },
-    onEachFeature: function(feature,layer) { 
-
-      if( uk.bounds ) {
-        uk.bounds.extend( layer.getBounds() );
-      } else {
-        uk.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
-      }
-
-      var nation = feature.properties.nation;
-      if( nation ) {
-        nation.polygons.push( layer );
-        if( nation.bounds ) {
-          nation.bounds.extend( layer.getBounds() );
-        } else {
-          nation.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
+      // this data is stored locally so we don't have the same async issue as with the jquery calls
+      uk = {"label":"United Kingdom"};
+    
+      L.geoJSON(las, {
+        style: function (feature) {
+          if( !feature.properties.region ) {
+            console.log( "Missing region info on feature", feature );
+            return {};
+          }
+          return {
+            color: feature.properties.region.colour,
+            weight: WEIGHT_DEFAULT,
+            opacity: 0.3,
+            fill: true,
+            fillColor: feature.properties.region.colour,
+            fillOpacity: FILL_DEFAULT
+          };
+        },
+        onEachFeature: function(feature,layer) { 
+    
+          if( uk.bounds ) {
+            uk.bounds.extend( layer.getBounds() );
+          } else {
+            uk.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
+          }
+    
+          var nation = feature.properties.nation;
+          if( nation ) {
+            nation.polygons.push( layer );
+            if( nation.bounds ) {
+              nation.bounds.extend( layer.getBounds() );
+            } else {
+              nation.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
+            }
+          }
+      
+          var region = feature.properties.region;
+          if( region ) {
+            region.polygons.push( layer );
+            if( region.bounds ) {
+              region.bounds.extend( layer.getBounds() );
+            } else {
+              region.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
+            }
+          }
+    
+          var county = feature.properties.county;
+          if( county ) {
+            county.polygons.push( layer );
+            if( county.bounds ) {
+              county.bounds.extend( layer.getBounds() );
+            } else {
+              county.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
+            }
+          }
+      
+          if( county ) {
+            layer.on({
+              mouseover: function(e) { featureCounty( this ) }.bind( county ),
+               mouseout: function(e) { unfeatureCounty( this ) }.bind( county )
+            });
+          }
+              //jQuery( '.area-info-section' ).hide();
+    //          for( var i=0;i<feature.properties.codes.length;++i ) { jQuery( '#'+feature.properties.codes[i] ).show(); } 
+    //          jQuery( '#area-debug' ).html( feature.properties.codes.join( ', ') );
+    
         }
-      }
+      }).addTo(map);
+
+      // hack to make channel islands a fake county for jumps
+      counties["channel-islands"].bounds = L.latLngBounds( counties["jersey"].bounds.getNorthWest(), counties["jersey"].bounds.getSouthEast() );
+      counties["channel-islands"].bounds.extend( counties["guernsey"].bounds );
   
-      var region = feature.properties.region;
-      if( region ) {
-        region.polygons.push( layer );
-        if( region.bounds ) {
-          region.bounds.extend( layer.getBounds() );
-        } else {
-          region.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
-        }
-      }
-
-      var county = feature.properties.county;
-      if( county ) {
-        county.polygons.push( layer );
-        if( county.bounds ) {
-          county.bounds.extend( layer.getBounds() );
-        } else {
-          county.bounds = L.latLngBounds( layer.getBounds().getNorthWest(), layer.getBounds().getSouthEast() );
-        }
-      }
-  
-      if( county ) {
-        layer.on({
-          mouseover: function(e) { featureCounty( this ) }.bind( county ),
-           mouseout: function(e) { unfeatureCounty( this ) }.bind( county )
-        });
-      }
-          //jQuery( '.area-info-section' ).hide();
-//          for( var i=0;i<feature.properties.codes.length;++i ) { jQuery( '#'+feature.properties.codes[i] ).show(); } 
-//          jQuery( '#area-debug' ).html( feature.properties.codes.join( ', ') );
-
-    }
-  }).addTo(map);
-
-  // hack to make channel islands a fake county for jumps
-  counties["channel-islands"].bounds = L.latLngBounds( counties["jersey"].bounds.getNorthWest(), counties["jersey"].bounds.getSouthEast() );
-  counties["channel-islands"].bounds.extend( counties["guernsey"].bounds );
-  
-  loadData4();
-}
-
-function loadData4() {
-  jQuery.ajax({
-    url: 'https://spreadsheets.google.com/feeds/cells/1xE9AXVX7vXRnrvhVkA_9DubgxCFywN9bMhSIGws6GHc/1/public/full?alt=json-in-script',
-    jsonp: "callback",
-    dataType: "jsonp",
-    success: function( response ) {
-      var records = googleSheetToData( response, 3 );
-      for( var i=0;i<records.length;++i ) {
-        var record = records[i];
+      for( var i=0;i<response.group.length;++i ) {
+        var record = response.group[i];
         var nation = null;
         var region = null;
         var county = null;
