@@ -1,42 +1,6 @@
 
 var update_email = "christophergutteridge@gmail.com";
 
-function googleSheetToGrid( sheet ) {
-  //var rows = response.feed["gs$rowCount"];
-  //var cols = response.feed["gs$colCount"];
-  var grid = [];
-  for( var i=0; i<sheet.feed.entry.length; i++ ) {
-    var cell = sheet.feed.entry[i]["gs$cell"];
-    if( !grid[cell.row] ) { grid[cell.row] = []; }
-    grid[cell.row][cell.col] = cell;
-  }
-  return grid;
-}
-
-
-function googleSheetToData( sheet, heading_row ) {
-  var grid = googleSheetToGrid( sheet ); 
-  var headings = [];
-  for(var i=1;i<grid[heading_row].length;i++ ) {
-    if( grid[heading_row][i] ) {
-      headings[i] = grid[heading_row][i].inputValue.toLowerCase();
-    } else {
-      headings[i] = 'col_'+i;
-    }
-  }
-  var records = [];
-  for( var i=heading_row+1;i<grid.length;++i ) {
-    var record = {};
-    for( var j=1;j<headings.length;++j ) {
-      if( grid[i][j] ) {
-        record[headings[j]] = grid[i][j].inputValue;
-      } 
-    }
-    records.push( record );
-  }
-  return records;
-}
-
 function XRList( id, area, layout ) {
   jQuery(document).ready( function(){
     XRListWhenReady( id, area, layout  );
@@ -49,22 +13,21 @@ async function XRListWhenReady( id, area, layout  ) {
   if( !XRDATA ) {
     if( !XRLOADING ) { 
       XRLOADING = true;
-        jQuery.ajax({
-              url: 'https://spreadsheets.google.com/feeds/cells/1xE9AXVX7vXRnrvhVkA_9DubgxCFywN9bMhSIGws6GHc/1/public/full?alt=json-in-script',
-              jsonp: "callback",
-              dataType: "jsonp",
-              success: function( response ) {
-            XRDATA = response;
-            XRLOADING = false;
-          }
+      jQuery.ajax({
+        url: 'http://cache.xrgroups.org/xrgroups-v2.php',
+        jsonp: "callback",
+        dataType: "jsonp",
+        success: function( response ) {
+          XRDATA = response;
+          XRLOADING = false;
+        }
       });
     }
     while( XRLOADING ) { 
       await new Promise(r => setTimeout(r, 200));
     }
   }  
-
-  var records = googleSheetToData( XRDATA, 3 );
+  var records = XRDATA.group;
   var filteredRecords = [];
   for( var i=0;i<records.length;++i ) {
     var record = records[i];
