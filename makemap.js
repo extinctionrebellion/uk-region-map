@@ -16,40 +16,6 @@ var select;
 update_from_hash();
 $('#miniclosed').click( ()=>{ $('#miniopen').show(); $('#miniclosed').hide(); } );
 
-function googleSheetToGrid( sheet ) {
-  //var rows = response.feed["gs$rowCount"];
-  //var cols = response.feed["gs$colCount"];
-  var grid = [];
-  for( var i=0; i<sheet.feed.entry.length; i++ ) {
-    var cell = sheet.feed.entry[i]["gs$cell"];
-    if( !grid[cell.row] ) { grid[cell.row] = []; }
-    grid[cell.row][cell.col] = cell;
-  }
-  return grid;
-}
-
-function googleSheetToData( sheet, heading_row ) {
-  var grid = googleSheetToGrid( sheet ); 
-  var headings = [];
-  for(var i=1;i<grid[heading_row].length;i++ ) {
-    if( grid[heading_row][i] ) {
-      headings[i] = grid[heading_row][i].inputValue.toLowerCase();
-    } else {
-      headings[i] = 'col_'+i;
-    }
-  }
-  var records = [];
-  for( var i=heading_row+1;i<grid.length;++i ) {
-    var record = {};
-    for( var j=1;j<headings.length;++j ) {
-      if( grid[i][j] ) {
-        record[headings[j]] = grid[i][j].inputValue;
-      } 
-    }
-    records.push( record );
-  }
-  return records;
-}
 
 
 function text_to_id(text) {

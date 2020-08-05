@@ -6,10 +6,15 @@ function XRList( id, area, layout ) {
     XRListWhenReady( id, area, layout  );
   });
 }
+function XRGroups( id, names, layout ) {
+  jQuery(document).ready( function(){
+    XRGroupsWhenReady( id, names, layout  );
+  });
+}
 
 var XRDATA = null;
 var XRLOADING = false;
-async function XRListWhenReady( id, area, layout  ) {
+function XRLoadData() {
   if( !XRDATA ) {
     if( !XRLOADING ) { 
       XRLOADING = true;
@@ -23,11 +28,36 @@ async function XRListWhenReady( id, area, layout  ) {
         }
       });
     }
-    while( XRLOADING ) { 
-      await new Promise(r => setTimeout(r, 200));
-    }
   }  
+}
+async function XRGroupsWhenReady( id, names, layout  ) {
+  XRLoadData();
+  while( XRLOADING ) { 
+    await new Promise(r => setTimeout(r, 200));
+  }
   var records = XRDATA.group;
+
+  var filteredRecords = [];
+  for( var i=0;i<records.length;++i ) {
+    var record = records[i];
+    for( var j=0;j<names.length;++j ) {
+      if( names[j].trim().toLowerCase()==record.name.trim().toLowerCase() ) {
+        filteredRecords.push( record );
+      }
+    }
+  }
+
+  var rendered = XRRender( filteredRecords, layout );
+  jQuery( '#'+id ).text('').append( rendered );
+}
+
+async function XRListWhenReady( id, area, layout  ) {
+  XRLoadData();
+  while( XRLOADING ) { 
+    await new Promise(r => setTimeout(r, 200));
+  }
+  var records = XRDATA.group;
+
   var filteredRecords = [];
   for( var i=0;i<records.length;++i ) {
     var record = records[i];
@@ -40,19 +70,28 @@ async function XRListWhenReady( id, area, layout  ) {
     filteredRecords.push( record );
   }
 
+  var rendered = XRRender( filteredRecords, layout );
+  jQuery( '#'+id ).text('').append( rendered );
+}
+
+function XRRender( records, layout ) {
   var rendered;
   if( layout == "review" ) {
-    rendered = XRRenderReview( filteredRecords );
+    rendered = XRRenderReview( records );
   } 
-  if( layout == "table" ) {
-    rendered = XRRenderTable( filteredRecords );
-    rendered.append( '<p>This information is curated by the National and Regional Development circle. Please contact <a href="mailto:'+update_email+'">'+update_email+'</a> with any corrections or additions.</p>' );    
+  else if( layout == "table" ) {
+    rendered = XRRenderTable( records );
+    rendered.append( '<p>This information is curated by UK Rebel Hive. Please contact <a href="mailto:'+update_email+'">'+update_email+'</a> with any corrections or additions.</p>' );    
   } 
-  if( layout == "list" ) {
-    rendered = XRRenderList( filteredRecords );
-    rendered.append( '<p>This information is curated by the National and Regional Development circle. Please contact <a href="mailto:'+update_email+'">'+update_email+'</a> with any corrections or additions.</p>' );    
+  else if( layout == "list" ) {
+    rendered = XRRenderList( records );
+    rendered.append( '<p>This information is curated by the UK Rebel Hive. National and Regional Development circle. Please contact <a href="mailto:'+update_email+'">'+update_email+'</a> with any corrections or additions.</p>' );    
   } 
-  jQuery( '#'+id ).text('').append( rendered );
+  else 
+  {
+    rendered.append( '<p>Unkown layout '+layout+'</p>' );
+  }
+  return rendered;
 }
 
 function XRRenderList( records ) {
@@ -98,7 +137,8 @@ function XRRenderList( records ) {
     }
     ul.append( li );
   }
-  return ul;
+  var div = jQuery( '<div class="xr-groups-list"></div>' ).append(ul);
+  return div;
 }
 
 function XRRenderTable( records ) {
@@ -117,7 +157,8 @@ function XRRenderTable( records ) {
     }
     table.append( tr );
   }  
-  return table;
+  var div = jQuery( '<div class="xr-groups-list"></div>' ).append(table);
+  return div;
 }
 
 function XRRenderReview( records ) {
