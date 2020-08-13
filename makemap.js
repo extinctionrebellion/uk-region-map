@@ -332,8 +332,8 @@ function loadData() {
           if( record["instagram"] ) {
             popup_html += "<div><a target='_blank' href='"+record["instagram"]+"'>Instagram</a></div>";
           }
-          if( record["website"] ) {
-            popup_html += "<div><a target='_blank' href='"+record["website"]+"'>Website</a></div>";
+          if( record["web"] ) {
+            popup_html += "<div><a target='_blank' href='"+record["web"]+"'>Website</a></div>";
           }
           if( record["youtube"] ) {
             popup_html += "<div><a target='_blank' href='"+record["youtube"]+"'>Youtube</a></div>";
