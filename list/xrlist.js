@@ -41,7 +41,8 @@ async function XRGroupsWhenReady( id, names, layout  ) {
   for( var i=0;i<records.length;++i ) {
     var record = records[i];
     for( var j=0;j<names.length;++j ) {
-      if( names[j].trim().toLowerCase()==record.name.trim().toLowerCase() ) {
+      if( typeof names[j]=="string" && names[j].trim().toLowerCase()==record.name.trim().toLowerCase() 
+       || typeof names[j]=="number" && names[j]==record["hub id"] ){
         filteredRecords.push( record );
       }
     }
