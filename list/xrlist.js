@@ -6,6 +6,11 @@ function XRList( id, area, layout ) {
     XRListWhenReady( id, area, layout  );
   });
 }
+function XRListTag( id, tag, layout ) {
+  jQuery(document).ready( function(){
+    XRListTagWhenReady( id, tag, layout  );
+  });
+}
 function XRGroups( id, names, layout ) {
   jQuery(document).ready( function(){
     XRGroupsWhenReady( id, names, layout  );
@@ -30,6 +35,30 @@ function XRLoadData() {
     }
   }  
 }
+async function XRListTagWhenReady( id, tag, layout  ) {
+  XRLoadData();
+  while( XRLOADING ) { 
+    await new Promise(r => setTimeout(r, 200));
+  }
+  var records = XRDATA.group;
+
+  var filteredRecords = [];
+  for( var i=0;i<records.length;++i ) {
+    var record = records[i];
+    if( record["tags"] ) {
+      var tags = record.tags.split( /\s*;\s*/ );
+      for( j=0;j<tags.length;++j ) {
+        if( tags[j]==tag ) { 
+          filteredRecords.push( record );
+        }
+      }
+    }
+  }
+
+  var rendered = XRRender( filteredRecords, layout );
+  jQuery( '#'+id ).text('').append( rendered );
+}
+
 async function XRGroupsWhenReady( id, names, layout  ) {
   XRLoadData();
   while( XRLOADING ) { 
