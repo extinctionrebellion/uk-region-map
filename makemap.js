@@ -5,6 +5,7 @@ var uk;
 var regions = {};
 var counties = {};
 var nations = {};
+var groups = {};
 var laLookup = {};
 var FILL_DEFAULT = 0.5;
 var WEIGHT_DEFAULT = 2;
@@ -275,6 +276,14 @@ function loadData() {
         if( record["xr region"] ) { region = regions[ text_to_id(record["xr region"])]; }
         if( record["county"] )    { county = counties[text_to_id(record["county"])]; }
 
+        var group = {
+          label: record["name"],
+          bounds: null,
+          markers: [],
+          polygons: [],
+          centre: null,
+          zoom: 11 
+        };
         var lls=[];
         var llcodes = [ 'latlong', 'latlong2', 'latlong3', 'latlong4', 'latlong5', 'latlong6', 'latlong7', 'latlong8', 'latlong9' ];
    
@@ -304,6 +313,10 @@ function loadData() {
           if( nation ) { nation.markers.push( marker ); }
           if( region ) { region.markers.push( marker ); }
           if( county ) { county.markers.push( marker ); }
+          if( group ) { 
+            group.markers.push( marker ); 
+            group.centre = ll;
+          }
 
           var tooltip = L.tooltip({"className":"place-name","direction":"left", "opacity":0.7 });
           tooltip.setContent(record["name"]);
@@ -355,6 +368,9 @@ function loadData() {
             });
           }
         }
+        if( record["hub id"] ) { 
+          groups[ record["hub id"] ] = group;
+        }
       }  
       addQuickJumps();
     }
@@ -365,6 +381,7 @@ function addQuickJumps() {
   var nation_ids = Object.keys(nations).sort(); 
   var region_ids = Object.keys(regions).sort(); 
   var county_ids = Object.keys(counties).sort(); 
+  var group_ids = Object.keys(groups).sort(); 
   zoom_to['uk'] = uk;
 
   var buttons = [];
@@ -387,6 +404,13 @@ function addQuickJumps() {
     // don't add county info if there's a region of the same name
     if( !zoom_to[id] ) {
       zoom_to[id] = counties[id];
+    }
+  }
+  for( var i=0; i<group_ids.length; ++i ) {
+    var id = group_ids[i];
+    // don't add group info if there's a region of the same name (there really shouldn't be as this uses ID!)
+    if( !zoom_to[id] ) {
+      zoom_to[id] = groups[id];
     }
   }
 
@@ -431,6 +455,10 @@ function update_from_hash() {
     if( zoom_to[code] && zoom_to[code]['bounds']) {
       map.fitBounds( zoom_to[code].bounds );
       select.val(code);
+    }
+    if( zoom_to[code] && zoom_to[code]['centre'] && zoom_to[code]['zoom']) {
+      map.setView( zoom_to[code].centre );
+      map.setZoom( zoom_to[code].zoom );
     }
     if( code == "minimal" ) {
       minimal = true;
