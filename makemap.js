@@ -452,16 +452,17 @@ function update_from_hash() {
   var codes = hash.split( /,/ );
   for( var i=0;i<codes.length;++i ) {
     var code = codes[i];
+    if( code == "minimal" ) {
+      minimal = true;
+      continue;
+    }
     if( zoom_to[code] && zoom_to[code]['bounds']) {
       map.fitBounds( zoom_to[code].bounds );
       select.val(code);
     }
     if( zoom_to[code] && zoom_to[code]['centre'] && zoom_to[code]['zoom']) {
-      map.setView( zoom_to[code].centre );
       map.setZoom( zoom_to[code].zoom );
-    }
-    if( code == "minimal" ) {
-      minimal = true;
+      map.setView( zoom_to[code].centre );
     }
   }
   if( minimal ) {
