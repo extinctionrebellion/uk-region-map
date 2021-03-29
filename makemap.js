@@ -357,6 +357,9 @@ function loadData() {
           if( record["email"] ) {
             popup_html += "<div><a href='mailto:"+record["email"]+"'>"+record["email"]+"</a></div>";
           }
+          if( region && region['extra links'] ) {
+            popup_html += "<div style='margin-top:1em'>"+region["extra links"]+"</div>";
+          }
           popup_html += "</div>";
           marker.bindPopup(popup_html);
 
