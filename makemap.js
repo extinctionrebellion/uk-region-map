@@ -319,7 +319,11 @@ function loadData() {
           }
 
           var tooltip = L.tooltip({"className":"place-name","direction":"left", "opacity":0.7 });
-          tooltip.setContent(record["name"]);
+          if( record["subname"] ) {
+            tooltip.setContent(record["name"]+"<br />"+record["subname"]);
+          } else {
+            tooltip.setContent(record["name"]);
+          } 
           marker.bindTooltip(tooltip);
             
           var popup_html = "<div>";
