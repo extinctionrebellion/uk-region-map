@@ -324,9 +324,6 @@ function loadData() {
             
           var popup_html = "<div>";
           popup_html += "<h2>"+record["name"]+"</h2>";
-          if( record["nation"] ) {
-            popup_html += "<div>Nation: "+record["nation"]+"</div>";
-          }
           if( record["xr region"] ) {
             popup_html += "<div>Region affiliation: "+record["xr region"]+"</div>";
           }
