@@ -355,8 +355,8 @@ function loadData() {
           if( record["youtube"] ) {
             popup_html += "<div><a target='_blank' href='"+record["youtube"]+"'>Youtube</a></div>";
           }
-          if( record["action network"] ) {
-            popup_html += "<div><a target='_blank' href='"+record["action network"]+"'>Action Network</a></div>";
+          if( record["an code"] ) {
+            popup_html += "<div><a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?source=direct_link&referrer=group-"+record["an code"]+"'>Join email list</a></div>";
           }
           if( record["email"] ) {
             popup_html += "<div><a href='mailto:"+record["email"]+"'>"+record["email"]+"</a></div>";
