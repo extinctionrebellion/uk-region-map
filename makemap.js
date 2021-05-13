@@ -14,10 +14,23 @@ var feature_icon = make_icon('#999',true);
 var zoom_to = {};
 var select;
 
+
+// make the map
+map = L.map('map').setView([54.5, -2], 6);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+    maxZoom: 21
+}).addTo(map);
+
+// data needs to be loaded in a specific order so the ajax calls chain rather
+// than all fire at the same time.
+loadData();
 update_from_hash();
+
 $('#miniclosed').click( ()=>{ $('#miniopen').show(); $('#miniclosed').hide(); } );
 
-
+$('#area-corrections').click( ()=>{ $('#corrections-popup').show(); } );
+$('#corrections-popup-inner .button').click( ()=>{ $('#corrections-popup').hide(); } );
 
 function text_to_id(text) {
   if( !text ) { return null; }
@@ -89,16 +102,6 @@ function unfeatureCounty( county ) {
   }
 }
 
-// make the map
-map = L.map('map').setView([54.5, -2], 6);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-    maxZoom: 21
-}).addTo(map);
-
-// data needs to be loaded in a specific order so the ajax calls chain rather
-// than all fire at the same time.
-loadData();
 
 function loadData() {
   // loads regions
@@ -356,7 +359,14 @@ function loadData() {
             popup_html += "<div><a target='_blank' href='"+record["youtube"]+"'>Youtube</a></div>";
           }
           if( record["an code"] ) {
-            popup_html += "<div><a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?source=direct_link&referrer=group-"+record["an code"]+"'>Join email list</a></div>";
+            popup_html += "<div><a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for local, and national news</a></div>";
+          } else {
+            if( record["Non AN Mailinglist"] ) {
+              popup_html += "<div><a target='_blank' href='"+record["Non AN Mailinglist"]+"'>Sign up for local group news</a></div>";
+            }
+            if( region && region["an code"] ) {
+              popup_html += "<div><a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for regional and national news</a></div>";
+            }
           }
           if( record["email"] ) {
             popup_html += "<div><a href='mailto:"+record["email"]+"'>"+record["email"]+"</a></div>";
@@ -393,6 +403,8 @@ function addQuickJumps() {
 
   var buttons = [];
   buttons.push( 'uk' );
+
+/*
   for( var i=0; i<nation_ids.length; ++i ) {
     var id = nation_ids[i];
     // only add nations that are not also regions (England)
@@ -401,6 +413,8 @@ function addQuickJumps() {
       buttons.push( id );
     }
   }
+*/
+
   for( var i=0; i<region_ids.length; ++i ) {
     var id = region_ids[i];
     zoom_to[id] = regions[id];
@@ -456,6 +470,7 @@ function update_from_hash() {
   if( !hash ) { return; }
 
   var minimal = false;
+  var nowheel = false;
   var codes = hash.split( /,/ );
   for( var i=0;i<codes.length;++i ) {
     var code = codes[i];
@@ -463,14 +478,25 @@ function update_from_hash() {
       minimal = true;
       continue;
     }
+    if( code == "nowheel" ) {
+      nowheel = true;
+      continue;
+    }
     if( zoom_to[code] && zoom_to[code]['bounds']) {
       map.fitBounds( zoom_to[code].bounds );
-      select.val(code);
+      if( counties[code] ) {
+        select.val(code); 
+      }
     }
     if( zoom_to[code] && zoom_to[code]['centre'] && zoom_to[code]['zoom']) {
       map.setZoom( zoom_to[code].zoom );
       map.setView( zoom_to[code].centre );
     }
+  }
+  if( nowheel ) {
+    map.scrollWheelZoom.disable(); 
+  } else {
+    map.scrollWheelZoom.enable(); 
   }
   if( minimal ) {
     $('body').addClass( "minimal" );

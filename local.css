@@ -7,20 +7,22 @@ html, body {
 
 #banner {
 }
-#logo {
-	max-width: 100px;
-	height: 2em;
-	float: left;
-	padding: 0em 0.5em 0.5em 0;
+.logo {
+	display: block;
+	margin: auto;
+	max-width: 200px;
+	height: 50px;
+	margin-bottom: 1
 }
 #banner h1 {
-	font-size: 110%;
 	font-weight: bold;
 	font-family: sans-serif;
+	margin-bottom: 0;
+
 }
 #banner h2 {
-	font-size: 110%;
-	font-weight: bold;
+	margin-top: 0;
+	font-weight: normal;
 	font-family: sans-serif;
 }
 
@@ -45,13 +47,55 @@ html, body {
 	position: absolute;
 	top: 0;
 	right: 0;
-	background-color: rgba(0,0,0,0.5);
-        color: white;
+	background-color: white;
+	color: #333;
 	z-index: 1000;
-	padding: 1em;
-	text-align: left;
+	padding: 10px;
+	text-align: center;
 	max-width: 25%;
 	font-size: 90%;
+	margin: 10px 10px 0 0;
+}
+#area-corrections {
+	background-color: white;
+	color: #333;
+	font-size: 22px;
+	font-family: sans-serif;
+	padding: 10px;
+	cursor: pointer;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 500;
+	margin: 0 0 10px 10px;
+}
+#corrections-popup {
+	display: none;
+	position: absolute;
+	top: 25%;
+	width: 100%;
+	z-index: 1100;
+	text-align: center;
+}	
+#corrections-popup-inner {
+	display: inline-block;
+	overflow: auto;
+	background-color: white;
+	border: solid 3px black;
+	width: 50%;
+	height: 50%;
+	color: #333;
+	font-size: 22px;
+	font-family: sans-serif;
+	padding: 10px;
+}
+#corrections-popup-inner .button {
+	font-size: 22px;
+	font-family: sans-serif;
+	padding: 10px;
+	cursor: pointer;
+	border: solid 2px black;
+	display: inline-block;
 }
 #area-debug {
 	background-color: rgba(255,255,255,0.5);
@@ -76,7 +120,7 @@ html, body {
 	margin-top: 0.2em;
 }
 #area-info a {
-	color: #fff;
+	color: #000;
 	font-weight: bold;
 }
 
