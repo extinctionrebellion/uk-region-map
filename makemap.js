@@ -334,30 +334,39 @@ function loadData() {
           if( record["popup"] ) {
             popup_html += "<p>"+record["popup"]+"</p>";
           }
-          if( record["xr region"] ) {
-            popup_html += "<div>Region affiliation: "+record["xr region"]+"</div>";
+
+          var list = [];
+          if( record["web"] ) {
+            list.push( "<a target='_blank' href='"+record["web"]+"'>Website</a>" );
           }
-          if( record["county"] ) {
-            popup_html += "<div>County affiliation: "+record["county"]+"</div>";
+          if( record["email"] ) {
+            list.push( "<a href='mailto:"+record["email"]+"'>Email</a>" );
           }
+          if( list.length ) {
+            popup_html += "<div style='margin-top:1em'>" + list.join( " - " ) + "</div>";;
+          }
+
+          var list2 = [];
           if( record["page"] ) {
-            popup_html += "<div><a target='_blank' href='"+record["page"]+"'>Facebook Page</a></div>";
+            list2.push( "<a target='_blank' href='"+record["page"]+"'><img class='sm-icon' title='Facebook Page' src='images/facebook.png' /></a>" );
           }
           if( record["group"] ) {
-            popup_html += "<div><a target='_blank' href='"+record["group"]+"'>Facebook Group</a></div>";
+            list2.push( "<a target='_blank' href='"+record["group"]+"'><img class='sm-icon' title='Facebook Group' src='images/facebook.png' /></a>" );
           }
           if( record["twitter"] ) {
-            popup_html += "<div><a target='_blank' href='"+record["twitter"]+"'>Twitter</a></div>";
+            list2.push( "<a target='_blank' href='"+record["twitter"]+"'><img class='sm-icon' title='Twitter' src='images/twitter.png' /></a>" );
           }
           if( record["instagram"] ) {
-            popup_html += "<div><a target='_blank' href='"+record["instagram"]+"'>Instagram</a></div>";
-          }
-          if( record["web"] ) {
-            popup_html += "<div><a target='_blank' href='"+record["web"]+"'>Website</a></div>";
+            list2.push( "<a target='_blank' href='"+record["instagram"]+"'><img class='sm-icon' title='Instagram' src='images/insta.png' /></a>" );
           }
           if( record["youtube"] ) {
-            popup_html += "<div><a target='_blank' href='"+record["youtube"]+"'>Youtube</a></div>";
+            list2.push( "<a target='_blank' href='"+record["youtube"]+"'><img class='sm-icon' title='Youtube' src='images/youtube.png' /></a>" );
           }
+          if( list2.length ) {
+            popup_html += "<div style='margin-top:1em'>" + list2.join( " " ) + "</div>";;
+          }
+
+          popup_html += "<div style='margin-top:1em'>";
           if( record["an code"] ) {
             popup_html += "<div><a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for local, and national news</a></div>";
           } else {
@@ -368,12 +377,20 @@ function loadData() {
               popup_html += "<div><a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for regional and national news</a></div>";
             }
           }
-          if( record["email"] ) {
-            popup_html += "<div><a href='mailto:"+record["email"]+"'>"+record["email"]+"</a></div>";
-          }
+          popup_html += "</div>";
           if( region && region['extra links'] ) {
             popup_html += "<div style='margin-top:1em'>"+region["extra links"]+"</div>";
           }
+
+          var affiliations = ["UK"]; 
+          if( record["xr region"] ) {
+            affiliations.push( record["xr region"] );
+          }
+          if( record["county"] ) {
+            affiliations.push( record["county"] );
+          }
+          popup_html += "<div style='margin-top:1em'>Affiliations: "+affiliations.join( ", ")+".</div>";
+
           popup_html += "</div>";
           marker.bindPopup(popup_html);
 

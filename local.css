@@ -119,6 +119,9 @@ html, body {
 .leaflet-popup-content p ,.area-info-section p {
 	margin-top: 0.2em;
 }
+.sm-icon { 
+	width: 32px;
+}
 #area-info a {
 	color: #000;
 	font-weight: bold;
