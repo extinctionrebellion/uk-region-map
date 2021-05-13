@@ -40,6 +40,10 @@ html, body {
 	display: none;
 }
 
+#miniclosed {
+	font-family: sans-serif;
+	font-size: 22px;
+}
 
 .area-info-section { display: none; }
 
