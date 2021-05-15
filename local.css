@@ -125,6 +125,7 @@ html, body {
 }
 .sm-icon { 
 	width: 32px;
+	vertical-align: top;
 }
 #area-info a {
 	color: #000;

@@ -42,16 +42,10 @@ function make_icon( colour, big ) {
   if( big ) { scale = 2; }
   return L.icon({
             iconUrl: 'data:image/svg+xml;charset=utf-8,%3Csvg version%3D"1.1" id%3D"Layer_1" xmlns%3D"http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" xmlns%3Axlink%3D"http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink" x%3D"0px" y%3D"0px" viewBox%3D"0 0 365 560" enable-background%3D"new 0 0 365 560" xml%3Aspace%3D"preserve"%3E%3Cg%3E%3Cpath stroke%3D"%23000" stroke-width%3D"20px" fill%3D"'+encodeURIComponent(colour)+'" d%3D"M182.9%2C551.7c0%2C0.1%2C0.2%2C0.3%2C0.2%2C0.3S358.3%2C283%2C358.3%2C194.6c0-130.1-88.8-186.7-175.4-186.9 C96.3%2C7.9%2C7.5%2C64.5%2C7.5%2C194.6c0%2C88.4%2C175.3%2C357.4%2C175.3%2C357.4S182.9%2C551.7%2C182.9%2C551.7z " %2F%3E%3C%2Fg%3E%3C%2Fsvg%3E',
-//M122.2%2C187.2c0-33.6%2C27.2-60.8%2C60.8-60.8 c33.6%2C0%2C60.8%2C27.2%2C60.8%2C60.8S216.5%2C248%2C182.9%2C248C149.4%2C248%2C122.2%2C220.8%2C122.2%2C187.2z
                  iconSize: [scale*10, scale*16],
                iconAnchor: [scale*5,  scale*16],
             tooltipAnchor: [scale*6,  scale*-8],
               popupAnchor: [scale*0,  scale*-20],
-/*
-    shadowUrl: 'my-icon-shadow.png',
-    shadowSize: [68, 95],
-    shadowAnchor: [22, 94]
-*/
   });
 }
 
@@ -335,23 +329,18 @@ function loadData() {
             popup_html += "<p>"+record["popup"]+"</p>";
           }
 
-          var list = [];
+          var list2 = [];
           if( record["web"] ) {
-            list.push( "<a target='_blank' href='"+record["web"]+"'>Website</a>" );
+            list2.push( "<a target='_blank' href='"+record["web"]+"'><img class='sm-icon' title='Website' src='images/web.png' /></a>" );
           }
           if( record["email"] ) {
-            list.push( "<a href='mailto:"+record["email"]+"'>Email</a>" );
+            list2.push( "<a href='mailto:"+record["email"]+"'><img class='sm-icon' title='Email' src='images/email.png' /></a>" );
           }
-          if( list.length ) {
-            popup_html += "<div style='margin-top:1em'>" + list.join( " - " ) + "</div>";;
-          }
-
-          var list2 = [];
           if( record["page"] ) {
-            list2.push( "<a target='_blank' href='"+record["page"]+"'><img class='sm-icon' title='Facebook Page' src='images/facebook.png' /></a>" );
+            list2.push( "<a target='_blank' href='"+record["page"]+"'><img class='sm-icon' title='Facebook Page' src='images/facebook-page.png' /></a>" );
           }
           if( record["group"] ) {
-            list2.push( "<a target='_blank' href='"+record["group"]+"'><img class='sm-icon' title='Facebook Group' src='images/facebook.png' /></a>" );
+            list2.push( "<a target='_blank' href='"+record["group"]+"'><img class='sm-icon' title='Facebook Group' src='images/facebook-group.png' /></a>" );
           }
           if( record["twitter"] ) {
             list2.push( "<a target='_blank' href='"+record["twitter"]+"'><img class='sm-icon' title='Twitter' src='images/twitter.png' /></a>" );
@@ -368,13 +357,13 @@ function loadData() {
 
           popup_html += "<div style='margin-top:1em'>";
           if( record["an code"] ) {
-            popup_html += "<div><a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for local, and national news</a></div>";
+            popup_html += "<div>&#x1F449; <a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for local, and national news</a></div>";
           } else {
             if( record["Non AN Mailinglist"] ) {
-              popup_html += "<div><a target='_blank' href='"+record["Non AN Mailinglist"]+"'>Sign up for local group news</a></div>";
+              popup_html += "<div>&#x1F449; <a target='_blank' href='"+record["Non AN Mailinglist"]+"'>Sign up for local group news</a></div>";
             }
             if( region && region["an code"] ) {
-              popup_html += "<div><a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for regional and national news</a></div>";
+              popup_html += "<div>&#x1F449; <a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for regional and national news</a></div>";
             }
           }
           popup_html += "</div>";
