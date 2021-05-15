@@ -9,8 +9,8 @@ var groups = {};
 var laLookup = {};
 var FILL_DEFAULT = 0.5;
 var WEIGHT_DEFAULT = 2;
-var plain_icon = make_icon('#999');
-var feature_icon = make_icon('#999',true);
+var plain_icon = make_pin('#999');
+var feature_icon = make_pin('#999',2);
 var zoom_to = {};
 var select;
 
@@ -37,15 +37,38 @@ function text_to_id(text) {
   return text.toLowerCase().replace( /[^a-z ]/, ' ' ).replace( / /g, '-' );
 }
 
-function make_icon( colour, big ) {
-  var scale = 1;
-  if( big ) { scale = 2; }
+function make_pin( colour, scale ) {
+  var svg = `
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 365 560" enable-background="new 0 0 365 560" xml:space="preserve">
+  <g>
+    <path stroke="#000" stroke-width="20px" fill="`+colour+`" d="M182.9,551.7c0,0.1,0.2,0.3,0.2,0.3S358.3,283,358.3,194.6c0-130.1-88.8-186.7-175.4-186.9 C96.3,7.9,7.5,64.5,7.5,194.6c0,88.4,175.3,357.4,175.3,357.4S182.9,551.7,182.9,551.7z " />
+  </g>
+</svg>`;
   return L.icon({
-            iconUrl: 'data:image/svg+xml;charset=utf-8,%3Csvg version%3D"1.1" id%3D"Layer_1" xmlns%3D"http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" xmlns%3Axlink%3D"http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink" x%3D"0px" y%3D"0px" viewBox%3D"0 0 365 560" enable-background%3D"new 0 0 365 560" xml%3Aspace%3D"preserve"%3E%3Cg%3E%3Cpath stroke%3D"%23000" stroke-width%3D"20px" fill%3D"'+encodeURIComponent(colour)+'" d%3D"M182.9%2C551.7c0%2C0.1%2C0.2%2C0.3%2C0.2%2C0.3S358.3%2C283%2C358.3%2C194.6c0-130.1-88.8-186.7-175.4-186.9 C96.3%2C7.9%2C7.5%2C64.5%2C7.5%2C194.6c0%2C88.4%2C175.3%2C357.4%2C175.3%2C357.4S182.9%2C551.7%2C182.9%2C551.7z " %2F%3E%3C%2Fg%3E%3C%2Fsvg%3E',
+                  iconUrl:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg),
                  iconSize: [scale*10, scale*16],
                iconAnchor: [scale*5,  scale*16],
             tooltipAnchor: [scale*6,  scale*-8],
               popupAnchor: [scale*0,  scale*-20],
+  });
+}
+function make_hourglass( colour ) {
+  scale = 3;
+  if( colour == '#000000' ) { colour = '#ffffff'; }
+  var svg = `
+<svg xmlns="http://www.w3.org/2000/svg" id="svg928" version="1.1" viewBox="0 0 264.58333 264.58334" height="1000" width="1000"> 
+  <g transform="translate(0,-32.41665)" id="layer1"> 
+    <circle cx='132.29135' cy='164.7' fill='#000' r='132.29135' />
+    <path id="path381-2-2-4" d="M 132.29135,37.977412 A 126.73073,126.73073 0 0 0 5.5607842,164.7079 126.73073,126.73073 0 0 0 132.29135,291.43918 126.73073,126.73073 0 0 0 259.02266,164.7079 126.73073,126.73073 0 0 0 132.29135,37.977412 Z m 0,18.438882 A 108.29185,108.29185 0 0 1 240.58378,164.7079 108.29185,108.29185 0 0 1 132.29135,273.00037 108.29185,108.29185 0 0 1 23.999744,164.7079 108.29185,108.29185 0 0 1 132.29135,56.416294 Z" style="opacity:1;fill:`+colour+`;fill-opacity:1;stroke:#000;stroke-width:5" /> 
+    <path id="path398-7-8-5" d="M 215.08784,83.800123 49.495694,84.088222 120.1276,164.70867 49.495694,245.32838 215.08784,245.61659 144.41828,164.70867 Z M 89.706681,102.22067 h 84.730799 l -42.36542,48.73177 z m 42.585459,76.3717 42.36542,48.73177 H 89.925942 Z" style="opacity:1;fill:`+colour+`;stroke:none;stroke-width:7;stroke-linejoin:miter;stroke-opacity:1" /> 
+  </g> 
+</svg>`;
+  return L.icon({
+                  iconUrl:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg),
+                 iconSize: [scale*10, scale*10],
+               iconAnchor: [scale*5,  scale*5],
+            tooltipAnchor: [scale*5,  scale*0],
+              popupAnchor: [scale*0,  scale*-5],
   });
 }
 
@@ -106,8 +129,9 @@ function loadData() {
     success: function( response ) {
       for( var i=0; i<response.region.length; ++i ) {
         var region = response.region[i];
-        region["usual_icon"] = make_icon( region["colour"] );
-        region["feature_icon"] = make_icon( region["colour"], true );
+        region["usual_icon"] = make_pin( region["colour"], 1 );
+        region["feature_icon"] = make_pin( region["colour"], 2 );
+        region["region_icon"] = make_hourglass( region["colour"] );
         region.polygons = [];
         region.markers = [];
         region.bounds = null;
@@ -302,6 +326,10 @@ function loadData() {
             usual_icon = region.usual_icon;
             feature_icon = region.feature_icon;
           }
+          if( record.category == 'Nation' || record.category == 'Region' ) {
+            usual_icon = region.region_icon;
+            feature_icon = region.region_icon;
+          }
           var marker = L.marker(ll,{ icon: usual_icon } );
           marker.xr_usual_icon = usual_icon;
           marker.xr_feature_icon = feature_icon;
@@ -324,7 +352,12 @@ function loadData() {
           marker.bindTooltip(tooltip);
             
           var popup_html = "<div>";
-          popup_html += "<h2>"+record["name"]+"</h2>";
+          popup_html += "<h2>"
+          popup_html += record["name"];
+          if( record.category == 'Region' ) {
+            popup_html += " (XR Region)";
+          }
+          popup_html += "</h2>";
           if( record["popup"] ) {
             popup_html += "<p>"+record["popup"]+"</p>";
           }
