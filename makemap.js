@@ -390,20 +390,20 @@ function loadData() {
 
           popup_html += "<div style='margin-top:1em'>";
           if( record["an code"] ) {
-            popup_html += "<div>&#x1F449; <a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for local, and national news</a></div>";
-          } else {
-            if( record["Non AN Mailinglist"] ) {
-              popup_html += "<div>&#x1F449; <a target='_blank' href='"+record["Non AN Mailinglist"]+"'>Sign up for local group news</a></div>";
-            }
-            if( region && region["an code"] ) {
-              popup_html += "<div>&#x1F449; <a target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for regional and national news</a></div>";
-            }
+            popup_html += "<a class='mlist-button' target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for news</a>";
+          } else if( region && region["an code"] ) {
+            popup_html += "<a class='mlist-button' target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for news</a>";
+          }
+          if( record["non an mailinglist"] ) {
+              popup_html += "<a class='mlist-button' target='_blank' href='"+record["non an mailinglist"]+"'>Sign up for "+record["name"]+" news</a>";
           }
           popup_html += "</div>";
+
           if( region && region['extra links'] ) {
             popup_html += "<div style='margin-top:1em'>"+region["extra links"]+"</div>";
           }
 
+          /*
           var affiliations = ["UK"]; 
           if( record["xr region"] ) {
             affiliations.push( record["xr region"] );
@@ -412,6 +412,7 @@ function loadData() {
             affiliations.push( record["county"] );
           }
           popup_html += "<div style='margin-top:1em'>Affiliations: "+affiliations.join( ", ")+".</div>";
+          */
 
           popup_html += "</div>";
           marker.bindPopup(popup_html);

@@ -133,6 +133,20 @@ html, body {
 .leaflet-popup-content p ,.area-info-section p {
 	margin-top: 0.2em;
 }
+a.mlist-button {
+	display: inline-block;
+	margin: 0.5em 0;
+	background-color: #000000;
+	color: #fff;
+	padding: 4px 20px;
+	font-family: FucXed,sans-serif;
+	font-size: 120%;
+	text-decoration: none;
+}
+a.mlist-button:hover {
+	background-color: #404040;
+}
+	
 .sm-icon { 
 	width: 32px;
 	vertical-align: top;
