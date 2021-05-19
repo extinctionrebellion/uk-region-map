@@ -354,9 +354,6 @@ function loadData() {
           var popup_html = "<div>";
           popup_html += "<h2>"
           popup_html += record["name"];
-          if( record.category == 'Region' ) {
-            popup_html += " (XR Region)";
-          }
           popup_html += "</h2>";
           if( record["popup"] ) {
             popup_html += "<p>"+record["popup"]+"</p>";
