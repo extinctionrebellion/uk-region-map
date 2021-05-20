@@ -15,8 +15,8 @@ html, body {
 }
 #map { height: 100%; width: 100% }
 
-#banner {
-}
+
+/* info sidebar */
 .logo {
 	display: block;
 	margin: auto;
@@ -24,38 +24,30 @@ html, body {
 	height: 50px;
 	margin-bottom: 1
 }
-#banner h1 {
+#area-info h1 {
 	font-weight: bold;
 	font-family: FucXed,sans-serif;
 	margin-bottom: 0;
 
 }
-#banner h2 {
+#area-info h2 {
 	margin-top: 0;
 	font-weight: normal;
 	font-family: FucXed,sans-serif;
 }
 
-#minibanner {
-	display: none;
-}
-.minimal #banner {
-	display: none;
-}
-.minimal #minibanner {
-	display: block;
-	cursor: pointer;
-}
-#minibanner #miniopen {
-	display: none;
-}
-
-#miniclosed {
+#area-info-button {
+	background-color: #fff;
+	color: #000;
 	font-size: 22px;
+	padding: 10px;
+	position: absolute;
+	z-index: 500;
+	margin: 10px;
+	top: 0;
+	right: 0;
+	text-align: center;
 }
-
-.area-info-section { display: none; }
-
 #area-info {
 	position: absolute;
 	top: 0;
@@ -67,20 +59,55 @@ html, body {
 	text-align: center;
 	max-width: 25%;
 	font-size: 90%;
-	margin: 10px 10px 0 0;
+	margin: 10px;
 }
-#area-corrections {
+.minimal #area-info {
+	width: calc( 100% - 40px );
+	height: calc( 100% - 40px );
+	max-width: inherit;
+	display: none;
+}
+.show-info #area-info {
+	display: block !important;
+}
+#controls-close {
+	display: none;
+}
+.minimal #controls-close {
+	display: inline-block;
+}
+
+#jumps {
+	text-align: center;
+}
+.jump {
+	display: inline-block;
+	margin: 0.2em;
+	font-family: FucXed,sans-serif;
+	padding: 0.3em 0.5em 0.1em 0.5em;
+	background-color: #a3a3a3;
+	color: #000;
+	cursor: pointer;
+	font-weight: normal;
+}
+.jump:hover {
+	opacity: 0.6;
+}
+
+/* end info sidebar */
+
+
+/* corrections button and popup */
+
+#area-corrections-button {
 	background-color: white;
 	color: #333;
 	font-size: 22px;
-	font-family: FucXed,sans-serif;
-	padding: 10px;
-	cursor: pointer;
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	z-index: 500;
-	margin: 0 0 10px 10px;
+	margin: 10px;
 }
 #corrections-popup {
 	display: none;
@@ -102,20 +129,10 @@ html, body {
 	font-family: FucXed,sans-serif;
 	padding: 10px;
 }
-#area-debug {
-	background-color: rgba(255,255,255,0.5);
-	font-size: 11px;
-	color: #333;
-	padding: 0 5px;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	z-index: 500;
-}
-.area-title {
-	font-weight: bold;
-	border-bottom: solid 1px #fff;
-}
+/* END corrections button and popup */
+
+
+/* Popups */
 .leaflet-container {
 	font-family:"Crimson Text",Georgia,serif;
 	font-size: 100%;
@@ -126,48 +143,32 @@ html, body {
 .leaflet-popup-content p ,.area-info-section p {
 	margin-top: 0.2em;
 }
+.sm-icon { 
+	width: 32px;
+	vertical-align: top;
+}
+/* end POPUPS */
+
+/* XR BUTTONS */
 a.xr-button {
 	cursor: pointer;
 	display: inline-block;
 	margin: 0.5em 0;
 	background-color: #000000;
-	color: #fff;
+	color: #ffffff;
 	padding: 4px 20px;
 	font-family: FucXed,sans-serif;
 	font-size: 120%;
 	text-decoration: none;
 }
 a.xr-button:hover {
+	color: #ffffff;
 	background-color: #404040;
 }
+/* END XR BUTTONS */
 	
-.sm-icon { 
-	width: 32px;
-	vertical-align: top;
-}
-#area-info a {
-	color: #000;
-	font-weight: bold;
-}
 
 .place-name {
 	font-size: 9pt !important;
 	padding: 0pt 2pt !important;
 }
-#jumps {
-	text-align: center;
-}
-.jump {
-	display: inline-block;
-	margin: 0.2em;
-	font-family: FucXed,sans-serif;
-	padding: 0.3em 0.5em 0.1em 0.5em;
-	background-color: #a3a3a3;
-	color: #000;
-	cursor: pointer;
-	font-weight: normal;
-}
-.jump:hover {
-	opacity: 0.6;
-}
-@media only screen and (min-width: 401px) and (max-width: 960px) {

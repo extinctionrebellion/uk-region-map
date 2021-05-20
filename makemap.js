@@ -2,6 +2,7 @@ jQuery(document).ready( function() {
 
 var map;
 var uk;
+var markers = [];
 var regions = {};
 var counties = {};
 var nations = {};
@@ -27,9 +28,12 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 loadData();
 update_from_hash();
 
-$('#miniclosed').click( ()=>{ $('#miniopen').show(); $('#miniclosed').hide(); } );
+$('#area-info-button').click( ()=>{ $('body').addClass('show-info'); } );
+$('#controls-close').click( ()=>{ $('body').removeClass('show-info'); } );
 
-$('#area-corrections').click( ()=>{ $('#corrections-popup').show(); } );
+$('#area-info-button').click( ()=>{ $('body').addClass('show-info'); } );
+
+$('#area-corrections-button').click( ()=>{ $('#corrections-popup').show(); } );
 $('#corrections-popup-inner .xr-button').click( ()=>{ $('#corrections-popup').hide(); } );
 
 function text_to_id(text) {
@@ -342,6 +346,7 @@ function loadData() {
             group.markers.push( marker ); 
             group.centre = ll;
           }
+          markers.push( marker );
 
           var tooltip = L.tooltip({"className":"place-name","direction":"left", "opacity":0.7 });
           if( record["subname"] ) {
@@ -431,6 +436,12 @@ function loadData() {
   });
 }
 
+function closePopups() {
+  for( var i=0; i<markers.length; ++i ) {
+    markers[i].closePopup();
+  }
+}
+    
 function addQuickJumps() {
   var nation_ids = Object.keys(nations).sort(); 
   var region_ids = Object.keys(regions).sort(); 
@@ -480,7 +491,11 @@ function addQuickJumps() {
     if( zoom_to[id]["text"] ) { button.css( "color",zoom_to[id]["text"]); }
     button.text( zoom_to[id].label );
     bdiv.append( button );
-    button.click( function(){ window.location.hash = '#'+this.id; }.bind( {id:id} ) );
+    button.click( function(){ 
+      window.location.hash = '#'+this.id; 
+      $(".leaflet-popup-close-button")[0].click();
+      $('body').removeClass('show-info'); 
+    }.bind( {id:id} ) );
   }
 
   select = jQuery( '<select><option>Show county...</option></select>' );
@@ -494,42 +509,52 @@ function addQuickJumps() {
   select.change(function(){
     var id = select.val();
     window.location.hash = '#'+id;
+    $(".leaflet-popup-close-button")[0].click();
+    $('body').removeClass('show-info'); 
   });
   jQuery( '#county_control' ).text('').append( select );
 
   $(window).on('hashchange', update_from_hash );
+  $(window).on('resize', update_from_hash );
 
   update_from_hash();
 }
 
 function update_from_hash() {
-  var hash = window.location.hash.replace( /^#/, '' );
-  if( !hash ) { return; }
-
   var minimal = false;
   var nowheel = false;
-  var codes = hash.split( /,/ );
-  for( var i=0;i<codes.length;++i ) {
-    var code = codes[i];
-    if( code == "minimal" ) {
-      minimal = true;
-      continue;
-    }
-    if( code == "nowheel" ) {
-      nowheel = true;
-      continue;
-    }
-    if( zoom_to[code] && zoom_to[code]['bounds']) {
-      map.fitBounds( zoom_to[code].bounds );
-      if( counties[code] ) {
-        select.val(code); 
+
+  var hash = window.location.hash.replace( /^#/, '' );
+  if( hash ) {
+    var codes = hash.split( /,/ );
+    for( var i=0;i<codes.length;++i ) {
+      var code = codes[i];
+      if( code == "minimal" ) {
+        minimal = true;
+        continue;
+      }
+      if( code == "nowheel" ) {
+        nowheel = true;
+        continue;
+      }
+      if( zoom_to[code] && zoom_to[code]['bounds']) {
+        map.fitBounds( zoom_to[code].bounds );
+        if( counties[code] ) {
+          select.val(code); 
+        }
+      }
+      if( zoom_to[code] && zoom_to[code]['centre'] && zoom_to[code]['zoom']) {
+        map.setZoom( zoom_to[code].zoom );
+        map.setView( zoom_to[code].centre );
       }
     }
-    if( zoom_to[code] && zoom_to[code]['centre'] && zoom_to[code]['zoom']) {
-      map.setZoom( zoom_to[code].zoom );
-      map.setView( zoom_to[code].centre );
-    }
   }
+
+  /* always use the minimal mode on small browser displays */
+  if( $('body').width() < 1024 ) {
+    minimal = true;
+  }
+
   if( nowheel ) {
     map.scrollWheelZoom.disable(); 
   } else {
