@@ -30,7 +30,7 @@ update_from_hash();
 $('#miniclosed').click( ()=>{ $('#miniopen').show(); $('#miniclosed').hide(); } );
 
 $('#area-corrections').click( ()=>{ $('#corrections-popup').show(); } );
-$('#corrections-popup-inner .button').click( ()=>{ $('#corrections-popup').hide(); } );
+$('#corrections-popup-inner .xr-button').click( ()=>{ $('#corrections-popup').hide(); } );
 
 function text_to_id(text) {
   if( !text ) { return null; }
@@ -387,12 +387,12 @@ function loadData() {
 
           popup_html += "<div style='margin-top:1em'>";
           if( record["an code"] ) {
-            popup_html += "<a class='mlist-button' target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for news</a>";
+            popup_html += "<a class='xr-button' target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for news</a>";
           } else if( region && region["an code"] ) {
-            popup_html += "<a class='mlist-button' target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for news</a>";
+            popup_html += "<a class='xr-button' target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for news</a>";
           }
           if( record["non an mailinglist"] ) {
-              popup_html += "<a class='mlist-button' target='_blank' href='"+record["non an mailinglist"]+"'>Sign up for "+record["name"]+" news</a>";
+              popup_html += "<a class='xr-button' target='_blank' href='"+record["non an mailinglist"]+"'>Sign up for "+record["name"]+" news</a>";
           }
           popup_html += "</div>";
 

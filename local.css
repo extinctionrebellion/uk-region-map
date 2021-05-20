@@ -102,13 +102,6 @@ html, body {
 	font-family: FucXed,sans-serif;
 	padding: 10px;
 }
-#corrections-popup-inner .button {
-	font-size: 22px;
-	padding: 10px;
-	cursor: pointer;
-	border: solid 2px black;
-	display: inline-block;
-}
 #area-debug {
 	background-color: rgba(255,255,255,0.5);
 	font-size: 11px;
@@ -133,7 +126,8 @@ html, body {
 .leaflet-popup-content p ,.area-info-section p {
 	margin-top: 0.2em;
 }
-a.mlist-button {
+a.xr-button {
+	cursor: pointer;
 	display: inline-block;
 	margin: 0.5em 0;
 	background-color: #000000;
@@ -143,7 +137,7 @@ a.mlist-button {
 	font-size: 120%;
 	text-decoration: none;
 }
-a.mlist-button:hover {
+a.xr-button:hover {
 	background-color: #404040;
 }
 	
@@ -166,11 +160,14 @@ a.mlist-button:hover {
 .jump {
 	display: inline-block;
 	margin: 0.2em;
-	border-radius: 1em;
+	font-family: FucXed,sans-serif;
 	padding: 0.3em 0.5em 0.1em 0.5em;
-	background-color: #999;
+	background-color: #a3a3a3;
+	color: #000;
 	cursor: pointer;
 	font-weight: normal;
-	border: solid 1px #333;
+}
+.jump:hover {
+	opacity: 0.6;
 }
 @media only screen and (min-width: 401px) and (max-width: 960px) {
