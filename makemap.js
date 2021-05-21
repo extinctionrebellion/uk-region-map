@@ -517,7 +517,11 @@ function addQuickJumps() {
 }
 
 function zoom_to_id(id) {
-  window.location.hash = '#'+id;
+  var hash = '#'+id;
+  if( flags.length ) {
+    hash += "," + flags.join( "," );
+  }
+  window.location.hash = hash;
   closePopups();
   $('body').removeClass('show-info'); 
 }
