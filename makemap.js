@@ -2,6 +2,7 @@ jQuery(document).ready( function() {
 
 var map;
 var uk;
+var flags = [];
 var markers = [];
 var regions = {};
 var counties = {};
@@ -492,9 +493,7 @@ function addQuickJumps() {
     button.text( zoom_to[id].label );
     bdiv.append( button );
     button.click( function(){ 
-      window.location.hash = '#'+this.id; 
-      $(".leaflet-popup-close-button")[0].click();
-      $('body').removeClass('show-info'); 
+      zoom_to_id( this.id );
     }.bind( {id:id} ) );
   }
 
@@ -507,10 +506,7 @@ function addQuickJumps() {
     select.append( option );
   }
   select.change(function(){
-    var id = select.val();
-    window.location.hash = '#'+id;
-    $(".leaflet-popup-close-button")[0].click();
-    $('body').removeClass('show-info'); 
+    zoom_to_id( select.val() );
   });
   jQuery( '#county_control' ).text('').append( select );
 
@@ -518,6 +514,12 @@ function addQuickJumps() {
   $(window).on('resize', update_from_hash );
 
   update_from_hash();
+}
+
+function zoom_to_id(id) {
+  window.location.hash = '#'+id;
+  closePopups();
+  $('body').removeClass('show-info'); 
 }
 
 function update_from_hash() {
@@ -555,17 +557,20 @@ function update_from_hash() {
     minimal = true;
   }
 
+  flags = [];  
   if( nowheel ) {
     map.scrollWheelZoom.disable(); 
+    flags.push("nowheel");
   } else {
     map.scrollWheelZoom.enable(); 
   }
   if( minimal ) {
     $('body').addClass( "minimal" );
+    flags.push("minimal");
   } else {
     $('body').removeClass( "minimal" );
   } 
-      
+    
 }
 
 }); //end of ready
