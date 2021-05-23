@@ -392,10 +392,15 @@ function loadData() {
           }
 
           popup_html += "<div style='margin-top:1em'>";
+          var region_param = ""; 
+          // only add a region param if the region is on action network. So not "other" basically.
+          if( region && region["an code"] ) {
+            region_param = "&region="+encodeURIComponent(region["label"]);
+          }
           if( record["an code"] ) {
-            popup_html += "<a class='xr-button' target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for news</a>";
+            popup_html += "<a class='xr-button' target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"&group="+encodeURIComponent(record['name'])+region_param+"'>Sign up for news</a>";
           } else if( region && region["an code"] ) {
-            popup_html += "<a class='xr-button' target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+record["an code"]+"'>Sign up for news</a>";
+            popup_html += "<a class='xr-button' target='_blank' href='https://actionnetwork.org/forms/local-group-sign-up-form-referrer-codes?clear_id=true&source=uk_regions_map&referrer=group-"+region["an code"]+region_param+"'>Sign up for news</a>";
           }
           if( record["non an mailinglist"] ) {
               popup_html += "<a class='xr-button' target='_blank' href='"+record["non an mailinglist"]+"'>Sign up for "+record["name"]+" news</a>";
