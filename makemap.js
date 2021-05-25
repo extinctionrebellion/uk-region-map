@@ -423,7 +423,7 @@ function loadData() {
           */
 
           popup_html += "</div>";
-          marker.bindPopup(popup_html);
+          marker.bindPopup(popup_html, { 'closeButton': false });
 
           if( record["county"] ) {
           //  var county = text_to_id(record["county"]);
