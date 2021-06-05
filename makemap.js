@@ -27,6 +27,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 // data needs to be loaded in a specific order so the ajax calls chain rather
 // than all fire at the same time.
 loadData();
+map.invalidateSize();
 update_from_hash();
 
 $('#area-info-button').click( ()=>{ $('body').addClass('show-info'); } );
