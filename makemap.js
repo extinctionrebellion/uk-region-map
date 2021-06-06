@@ -24,10 +24,12 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     maxZoom: 21
 }).addTo(map);
 
+// Chrome sometimes does not get the right map size at first. This should hopefully sort that.
+setInterval( ()=>{ map.invalidateSize(); }, 1000 );
+
 // data needs to be loaded in a specific order so the ajax calls chain rather
 // than all fire at the same time.
 loadData();
-map.invalidateSize();
 update_from_hash();
 
 $('#area-info-button').click( ()=>{ $('body').addClass('show-info'); } );
