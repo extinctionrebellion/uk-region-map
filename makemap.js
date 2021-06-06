@@ -552,14 +552,13 @@ function update_from_hash() {
         continue;
       }
       if( zoom_to[code] && zoom_to[code]['bounds']) {
-        map.fitBounds( zoom_to[code].bounds );
+        map.fitBounds( zoom_to[code].bounds, { animate: false }  );
         if( counties[code] ) {
           select.val(code); 
         }
       }
       if( zoom_to[code] && zoom_to[code]['centre'] && zoom_to[code]['zoom']) {
-        map.setZoom( zoom_to[code].zoom );
-        map.setView( zoom_to[code].centre );
+        map.setView( zoom_to[code].centre, zoom_to[code].zoom, { animate: false } );
       }
     }
   }
