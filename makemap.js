@@ -538,6 +538,8 @@ function update_from_hash() {
   var minimal = false;
   var nowheel = false;
 
+  map.invalidateSize(); 
+
   var hash = window.location.hash.replace( /^#/, '' );
   if( hash ) {
     var codes = hash.split( /,/ );
