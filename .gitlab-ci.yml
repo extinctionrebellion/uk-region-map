@@ -1,0 +1,26 @@
+variables:
+  GIT_DEPTH: 1
+
+stages:
+  - production
+  - staging
+
+production:
+  stage: production
+  only:
+    - production
+  script:
+    - cd ~/map/uk-region-map
+    - git pull
+  tags:
+    - s1_map_ssh
+
+staging:
+  stage: staging
+  only:
+    - master
+  script:
+    - cd ~/map/uk-region-map
+    - git pull
+  tags:
+    - staging_map_ssh
