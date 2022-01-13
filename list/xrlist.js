@@ -1,5 +1,5 @@
 
-var update_email = "christophergutteridge@gmail.com";
+var update_email = "map@extinctionrebellion.uk";
 
 function XRList( id, area, layout ) {
   jQuery(document).ready( function(){
