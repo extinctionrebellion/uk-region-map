@@ -142,6 +142,10 @@ html, body {
 .leaflet-popup-content p ,.area-info-section p {
 	margin-top: 0.2em;
 }
+.leaflet-popup-content .group-email {
+	color: #000;
+	text-decoration: none;
+}
 .sm-icon { 
 	width: 32px;
 	vertical-align: top;

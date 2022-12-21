@@ -372,9 +372,6 @@ function loadData() {
           if( record["web"] ) {
             list2.push( "<a target='_blank' href='"+record["web"]+"'><img class='sm-icon' title='Website' src='images/web.png' /></a>" );
           }
-          if( record["email"] ) {
-            list2.push( "<a href='mailto:"+record["email"]+"'><img class='sm-icon' title='Email' src='images/email.png' /></a>" );
-          }
           if( record["page"] ) {
             list2.push( "<a target='_blank' href='"+record["page"]+"'><img class='sm-icon' title='Facebook Page' src='images/facebook-page.png' /></a>" );
           }
@@ -392,6 +389,10 @@ function loadData() {
           }
           if( list2.length ) {
             popup_html += "<div style='margin-top:1em'>" + list2.join( " " ) + "</div>";;
+          }
+	
+          if( record["email"] ) {
+            popup_html += "<div style='margin-top:1em'><a class='group-email' href='mailto:"+record["email"]+"'>"+record["email"]+"</a></div>";
           }
 
           popup_html += "<div style='margin-top:1em'>";
