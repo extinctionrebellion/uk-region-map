@@ -142,9 +142,10 @@ html, body {
 .leaflet-popup-content p ,.area-info-section p {
 	margin-top: 0.2em;
 }
-.leaflet-popup-content .group-email {
+.leaflet-popup-content a.group-email {
 	color: #000;
 	text-decoration: none;
+	font-family: helvetica, sans-serif;
 }
 .sm-icon { 
 	width: 32px;
